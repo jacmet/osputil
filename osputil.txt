@@ -1,0 +1,3001 @@
+/usr/bin/osputil:
+(__TEXT,__text) section
+
+;;;;;;;;;;;;;;
+; entrypoint ;
+;;;;;;;;;;;;;;
+
+0000253c	pushl	$0x00
+0000253e	movl	%esp,%ebp
+00002540	andl	$0xf0,%esp
+00002543	subl	$0x10,%esp
+00002546	movl	0x04(%ebp),%ebx
+00002549	movl	%ebx,0x00(%esp,1)
+0000254d	leal	0x08(%ebp),%ecx
+00002550	movl	%ecx,0x04(%esp,1)
+00002554	addl	$0x01,%ebx
+00002557	shll	$0x02,%ebx
+0000255a	addl	%ecx,%ebx
+0000255c	movl	%ebx,0x08(%esp,1)
+00002560	calll	0x00002566
+00002565	hlt
+
+00002566	pushl	%ebp
+00002567	movl	%esp,%ebp
+00002569	pushl	%edi
+0000256a	pushl	%esi
+0000256b	pushl	%ebx
+0000256c	subl	$0x2c,%esp
+0000256f	movl	0x0c(%ebp),%edi
+00002572	movl	0x10(%ebp),%ebx
+00002575	movl	0x08(%ebp),%eax
+00002578	movl	%eax,_NXArgc
+0000257d	movl	%edi,_NXArgv
+00002583	movl	%ebx,_environ
+00002589	movl	(%edi),%ecx
+0000258b	testl	%ecx,%ecx
+0000258d	jne	0x00002596
+0000258f	movl	$0x00004e5c,%ecx
+00002594	jmp	0x000025af
+00002596	movl	%ecx,%edx
+00002598	jmp	0x000025a8
+0000259a	cmpb	$0x2f,%al
+0000259c	je	0x000025a3
+0000259e	addl	$0x01,%edx
+000025a1	jmp	0x000025a8
+000025a3	addl	$0x01,%edx
+000025a6	movl	%edx,%ecx
+000025a8	movzbl	(%edx),%eax
+000025ab	testb	%al,%al
+000025ad	jne	0x0000259a
+000025af	movl	%ecx,___progname
+000025b5	movl	%ebx,%eax
+000025b7	jmp	0x000025bc
+000025b9	addl	$0x04,%eax
+000025bc	movl	(%eax),%edx
+000025be	testl	%edx,%edx
+000025c0	jne	0x000025b9
+000025c2	leal	0x04(%eax),%esi
+000025c5	movl	0x00007000,%eax
+000025ca	movl	(%eax),%eax
+000025cc	testl	%eax,%eax
+000025ce	je	0x000025d2
+000025d0	call	*%eax
+000025d2	movl	0x00007008,%eax
+000025d7	movl	(%eax),%eax
+000025d9	testl	%eax,%eax
+000025db	je	0x000025df
+000025dd	call	*%eax
+000025df	calll	0x0000702d	; symbol stub for: ___keymgr_dwarf2_register_sections
+000025e4	leal	0xe0(%ebp),%eax
+000025e7	movl	%eax,0x04(%esp,1)
+000025eb	movl	$0x00004e60,(%esp,1)
+000025f2	calll	0x00002654
+000025f7	call	*0xe0(%ebp)
+000025fa	leal	0xe4(%ebp),%eax
+000025fd	movl	%eax,0x04(%esp,1)
+00002601	movl	$0x00004e90,(%esp,1)
+00002608	calll	0x00002654
+0000260d	movl	0xe4(%ebp),%eax
+00002610	testl	%eax,%eax
+00002612	je	0x0000261c
+00002614	movl	%eax,(%esp,1)
+00002617	calll	0x00007032	; symbol stub for: _atexit
+0000261c	movl	0x00007004,%eax
+00002621	movl	$0x00000000,(%eax)
+00002627	movl	%esi,0x0c(%esp,1)
+0000262b	movl	%ebx,0x08(%esp,1)
+0000262f	movl	%edi,0x04(%esp,1)
+00002633	movl	0x08(%ebp),%eax
+00002636	movl	%eax,(%esp,1)
+00002639	calll	0x00002873 ; main
+0000263e	movl	%eax,(%esp,1)
+00002641	calll	0x00007028	; symbol stub for: _exit
+00002646	nop
+00002647	nop
+00002648	pushl	$__mh_execute_header
+0000264d	jmp	*0x000060ac
+00002653	nop
+00002654	jmp	*0x000060b0
+
+
+;;;;;;;;;;;
+; usage() ;
+;;;;;;;;;;;
+
+0000265a	pushl	%ebp
+0000265b	movl	%esp,%ebp
+0000265d	subl	$0x18,%esp
+00002660	movl	0x000060a0,%eax
+00002665	movl	(%eax),%eax
+00002667	movl	%eax,(%esp,1)
+0000266a	calll	0x00007037	; symbol stub for: _basename
+0000266f	movl	%eax,0x04(%esp,1)
+00002673	movl	$0x00004ea8,%eax ; "Usage: ..."
+00002678	movl	%eax,(%esp,1)
+0000267b	calll	0x0000703c	; symbol stub for: _printf
+00002680	movl	$0x00004f44,%eax
+00002685	movl	%eax,(%esp,1)
+00002688	calll	0x0000703c	; symbol stub for: _printf
+0000268d	movl	$0x00004f54,%eax
+00002692	movl	%eax,0x08(%esp,1)
+00002696	movl	$0x00000000,0x04(%esp,1)
+0000269e	movl	$0x00004fa8,%eax
+000026a3	movl	%eax,(%esp,1)
+000026a6	calll	0x0000703c	; symbol stub for: _printf
+000026ab	movl	$0x00004fc4,%eax
+000026b0	movl	%eax,0x08(%esp,1)
+000026b4	movl	$0x00000001,0x04(%esp,1)
+000026bc	movl	$0x00004ff8,%eax
+000026c1	movl	%eax,(%esp,1)
+000026c4	calll	0x0000703c	; symbol stub for: _printf
+000026c9	movl	$0x00005010,%eax
+000026ce	movl	%eax,0x08(%esp,1)
+000026d2	movl	$0x00000002,0x04(%esp,1)
+000026da	movl	$0x0000504c,%eax
+000026df	movl	%eax,(%esp,1)
+000026e2	calll	0x0000703c	; symbol stub for: _printf
+000026e7	movl	$0x00005064,%eax
+000026ec	movl	%eax,0x08(%esp,1)
+000026f0	movl	$0x00000003,0x04(%esp,1)
+000026f8	movl	$0x000050e0,%eax
+000026fd	movl	%eax,(%esp,1)
+00002700	calll	0x0000703c	; symbol stub for: _printf
+00002705	movl	$0x00005104,%eax
+0000270a	movl	%eax,0x08(%esp,1)
+0000270e	movl	$0x00000004,0x04(%esp,1)
+00002716	movl	$0x00005158,%eax
+0000271b	movl	%eax,(%esp,1)
+0000271e	calll	0x0000703c	; symbol stub for: _printf
+00002723	movl	$0x00005178,%eax
+00002728	movl	%eax,(%esp,1)
+0000272b	calll	0x0000703c	; symbol stub for: _printf
+00002730	movl	$0x000051d0,%eax
+00002735	movl	%eax,0x08(%esp,1)
+00002739	movl	$0x00000001,0x04(%esp,1)
+00002741	movl	$0x000051fc,%eax
+00002746	movl	%eax,(%esp,1)
+00002749	calll	0x0000703c	; symbol stub for: _printf
+0000274e	movl	$0x00005214,%eax
+00002753	movl	%eax,0x08(%esp,1)
+00002757	movl	$0x00000002,0x04(%esp,1)
+0000275f	movl	$0x00005244,%eax
+00002764	movl	%eax,(%esp,1)
+00002767	calll	0x0000703c	; symbol stub for: _printf
+0000276c	movl	$0x00005264,%eax
+00002771	movl	%eax,0x08(%esp,1)
+00002775	movl	$0x00000003,0x04(%esp,1)
+0000277d	movl	$0x0000527c,%eax
+00002782	movl	%eax,(%esp,1)
+00002785	calll	0x0000703c	; symbol stub for: _printf
+0000278a	movl	$0x00005298,%eax
+0000278f	movl	%eax,0x08(%esp,1)
+00002793	movl	$0x00000004,0x04(%esp,1)
+0000279b	movl	$0x000052d0,%eax
+000027a0	movl	%eax,(%esp,1)
+000027a3	calll	0x0000703c	; symbol stub for: _printf
+000027a8	movl	$0x000052f4,%eax
+000027ad	movl	%eax,(%esp,1)
+000027b0	calll	0x0000703c	; symbol stub for: _printf
+000027b5	movl	$0x00000003,0x04(%esp,1)
+000027bd	movl	$0x00005304,%eax
+000027c2	movl	%eax,(%esp,1)
+000027c5	calll	0x0000703c	; symbol stub for: _printf
+000027ca	movl	$0x00000004,0x04(%esp,1)
+000027d2	movl	$0x00005318,%eax
+000027d7	movl	%eax,(%esp,1)
+000027da	calll	0x0000703c	; symbol stub for: _printf
+000027df	movl	$0x00000005,0x04(%esp,1)
+000027e7	movl	$0x0000532c,%eax
+000027ec	movl	%eax,(%esp,1)
+000027ef	calll	0x0000703c	; symbol stub for: _printf
+000027f4	movl	$0x00005348,%eax
+000027f9	movl	%eax,0x08(%esp,1)
+000027fd	movl	$0x00000006,0x04(%esp,1)
+00002805	movl	$0x00005360,%eax
+0000280a	movl	%eax,(%esp,1)
+0000280d	calll	0x0000703c	; symbol stub for: _printf
+00002812	movl	$0x00005378,%eax
+00002817	movl	%eax,(%esp,1)
+0000281a	calll	0x0000703c	; symbol stub for: _printf
+0000281f	movl	$0x00000000,0x04(%esp,1)
+00002827	movl	$0x00005388,%eax
+0000282c	movl	%eax,(%esp,1)
+0000282f	calll	0x0000703c	; symbol stub for: _printf
+00002834	movl	$0x00000001,0x04(%esp,1)
+0000283c	movl	$0x00005398,%eax
+00002841	movl	%eax,(%esp,1)
+00002844	calll	0x0000703c	; symbol stub for: _printf
+00002849	movl	$0x000053a8,%eax
+0000284e	movl	%eax,0x08(%esp,1)
+00002852	movl	$0x00000002,0x04(%esp,1)
+0000285a	movl	$0x000053dc,%eax
+0000285f	movl	%eax,(%esp,1)
+00002862	calll	0x0000703c	; symbol stub for: _printf
+00002867	movl	$0x00000001,(%esp,1)
+0000286e	calll	0x00007028	; symbol stub for: _exit
+
+
+;;;;;;;;;;
+; main() ;
+;;;;;;;;;;
+
+00002873	pushl	%ebp
+00002874	movl	%esp,%ebp
+00002876	subl	$0x58,%esp
+00002879	movl	$0x00000000,0xe0(%ebp)
+00002880	movl	$0x00000000,0xe8(%ebp)
+00002887	movl	0x0c(%ebp),%eax
+0000288a	movl	(%eax),%edx
+0000288c	movl	0x000060a0,%eax
+00002891	movl	%edx,(%eax)
+00002893	cmpl	$0x01,0x08(%ebp)
+00002897	jnel	0x00002ad0
+
+0000289d	calll	0x0000265a ; usage
+000028a2	jmpl	0x00002ad0
+000028a7	movl	0x00007010,%eax
+000028ac	movl	(%eax),%eax
+000028ae	testl	%eax,%eax
+000028b0	je	0x000028c6
+
+000028b2	movl	0x00007010,%eax
+000028b7	movl	(%eax),%eax
+000028b9	movl	%eax,(%esp,1)
+000028bc	calll	0x00007041	; symbol stub for: _atoi
+000028c1	movl	%eax,0xd4(%ebp)
+000028c4	jmp	0x000028cd
+
+000028c6	movl	$0xffffffff,0xd4(%ebp)
+000028cd	movl	0xd4(%ebp),%eax
+000028d0	movl	%eax,0xec(%ebp)
+000028d3	movl	$0xffffffff,0xf0(%ebp)
+000028da	movl	0x00007010,%eax
+000028df	movl	(%eax),%eax
+000028e1	testl	%eax,%eax
+000028e3	je	0x00002916
+
+000028e5	movl	0x00007010,%eax
+000028ea	movl	(%eax),%eax
+000028ec	movl	$0x0000003a,0x04(%esp,1) ; ':'
+000028f4	movl	%eax,(%esp,1)
+000028f7	calll	0x0000704b	; symbol stub for: _strchr
+000028fc	movl	%eax,0xf4(%ebp)
+000028ff	cmpl	$0x00,0xf4(%ebp)
+00002903	je	0x00002916
+
+00002905	movl	0xf4(%ebp),%eax
+00002908	addl	$0x01,%eax
+0000290b	movl	%eax,(%esp,1)
+0000290e	calll	0x00007041	; symbol stub for: _atoi
+00002913	movl	%eax,0xf0(%ebp)
+00002916	movl	0xe4(%ebp),%edx
+00002919	subl	$0x63,%edx
+0000291c	movl	%edx,0xd0(%ebp)
+0000291f	cmpl	$0x17,0xd0(%ebp)
+00002923	jal	0x00002ac9
+
+00002929	movl	0xd0(%ebp),%edx
+0000292c	movl	0x00005f20(,%edx,4),%eax
+00002933	jmp	*%eax
+
+.verbose:
+00002935	movl	$0x00000001,0xe8(%ebp) ; verbose option
+0000293c	jmpl	0x00002ace
+
+.get_state:
+00002941	movl	0xec(%ebp),%eax
+00002944	movl	%eax,(%esp,1)
+00002947	calll	0x000041b5 ; OSPGetState()
+0000294c	movl	%eax,0xe0(%ebp)
+0000294f	cmpl	$0x00,0xe8(%ebp)
+00002953	jel	0x00002ace
+
+00002959	movl	0xe0(%ebp),%eax
+0000295c	movl	%eax,0x08(%esp,1)
+00002960	movl	0xec(%ebp),%eax
+00002963	movl	%eax,0x04(%esp,1)
+00002967	movl	$0x00005438,%eax ; "getState(%d) = %d"
+0000296c	movl	%eax,(%esp,1)
+0000296f	calll	0x0000703c	; symbol stub for: _printf
+00002974	jmpl	0x00002ace
+
+.set_state:
+00002979	cmpl	$0xff,0xf0(%ebp)
+0000297d	jne	0x00002998
+
+0000297f	movl	$0x0000544c,%eax ; "setState requires an argument of the form <m>:<n>"
+00002984	movl	%eax,(%esp,1)
+00002987	calll	0x0000703c	; symbol stub for: _printf
+0000298c	movl	$0xffffffff,0xe0(%ebp)
+00002993	jmpl	0x00002ace
+
+00002998	movl	0xec(%ebp),%eax
+0000299b	movl	0xf0(%ebp),%edx
+0000299e	movl	%edx,0x04(%esp,1)
+000029a2	movl	%eax,(%esp,1)
+000029a5	calll	0x00004467 ; OPSSetState()
+000029aa	movl	%eax,0xe0(%ebp)
+000029ad	cmpl	$0x00,0xe8(%ebp)
+000029b1	jel	0x00002ace
+
+000029b7	movl	0xe0(%ebp),%eax
+000029ba	movl	%eax,0x0c(%esp,1)
+000029be	movl	0xf0(%ebp),%eax
+000029c1	movl	%eax,0x08(%esp,1)
+000029c5	movl	0xec(%ebp),%eax
+000029c8	movl	%eax,0x04(%esp,1)
+000029cc	movl	$0x00005480,%eax ; "setstate(%d,%d) = %d"
+000029d1	movl	%eax,(%esp,1)
+000029d4	calll	0x0000703c	; symbol stub for: _printf
+000029d9	jmpl	0x00002ace
+
+.clearstate:
+000029de	movl	0xec(%ebp),%eax
+000029e1	movl	%eax,(%esp,1)
+000029e4	calll	0x000047f8 ; OSPClearState()
+000029e9	movl	%eax,0xe0(%ebp)
+000029ec	cmpl	$0x00,0xe8(%ebp)
+000029f0	jel	0x00002ace ; .loop
+000029f6	movl	0xe0(%ebp),%eax
+000029f9	movl	%eax,0x08(%esp,1)
+000029fd	movl	0xec(%ebp),%eax
+00002a00	movl	%eax,0x04(%esp,1)
+00002a04	movl	$0x00005498,%eax ; "clearstate(%d) = %d"
+00002a09	movl	%eax,(%esp,1)
+00002a0c	calll	0x0000703c	; symbol stub for: _printf
+00002a11	jmpl	0x00002ace
+
+.setled:
+00002a16	cmpl	$0xff,0xf0(%ebp)
+00002a1a	jne	0x00002a35
+00002a1c	movl	$0x000054b0,%eax ; "setled requires an argument.."
+00002a21	movl	%eax,(%esp,1)
+00002a24	calll	0x0000703c	; symbol stub for: _printf
+00002a29	movl	$0xffffffff,0xe0(%ebp)
+00002a30	jmpl	0x00002ace
+
+00002a35	movl	0xf0(%ebp),%eax
+00002a38	movl	0xec(%ebp),%edx
+00002a3b	movl	%eax,0x04(%esp,1)
+00002a3f	movl	%edx,(%esp,1)
+00002a42	calll	0x00004b4d ; OSPSetLEDBehavior(led, mode)
+00002a47	movl	%eax,0xe0(%ebp)
+00002a4a	cmpl	$0x00,0xe8(%ebp) ; verbose?
+00002a4e	je	0x00002ace
+
+00002a50	movl	0xe0(%ebp),%eax
+00002a53	movl	%eax,0x0c(%esp,1)
+00002a57	movl	0xf0(%ebp),%eax
+00002a5a	movl	%eax,0x08(%esp,1)
+00002a5e	movl	0xec(%ebp),%eax
+00002a61	movl	%eax,0x04(%esp,1)
+00002a65	movl	$0x000054e4,%eax ; "setled(%d,%d) = %d"
+00002a6a	movl	%eax,(%esp,1)
+00002a6d	calll	0x0000703c	; symbol stub for: _printf
+00002a72	jmp	0x00002ace
+
+.set_fan:
+00002a74	movl	0xec(%ebp),%eax
+00002a77	movl	%eax,(%esp,1)
+00002a7a	calll	0x00004d8e ; OSPSetFanBehavior
+00002a7f	movl	%eax,0xe0(%ebp)
+00002a82	cmpl	$0x00,0xe8(%ebp) ; verbose?
+00002a86	je	0x00002ace
+
+00002a88	movl	0xe0(%ebp),%eax
+00002a8b	movl	%eax,0x08(%esp,1)
+00002a8f	movl	0xec(%ebp),%eax
+00002a92	movl	%eax,0x04(%esp,1)
+00002a96	movl	$0x000054f8,%eax ; "setFan(%d) = %d"
+00002a9b	movl	%eax,(%esp,1)
+00002a9e	calll	0x0000703c	; symbol stub for: _printf
+00002aa3	jmp	0x00002ace
+
+.zap_nvram:
+00002aa5	calll	0x00004a30 ; OSPClearNVRAM
+00002aaa	movl	%eax,0xe0(%ebp)
+00002aad	cmpl	$0x00,0xe8(%ebp) ; verbose
+00002ab1	je	0x00002ace ; .loop
+
+00002ab3	movl	0xe0(%ebp),%eax
+00002ab6	movl	%eax,0x04(%esp,1)
+00002aba	movl	$0x0000550c,%eax ; "zapNVRAM() = %d"
+00002abf	movl	%eax,(%esp,1)
+00002ac2	calll	0x0000703c	; symbol stub for: _printf
+00002ac7	jmp	0x00002ace ; .loop
+
+00002ac9	calll	0x0000265a ; usage
+
+.loop:
+00002ace	jmp	0x00002ad0
+00002ad0	movl	$0x00000000,0x10(%esp,1)
+00002ad8	movl	$0x00006020,%eax
+00002add	movl	%eax,0x0c(%esp,1)
+00002ae1	movl	$0x00005520,%eax ; getop optstring (vg:s..)
+00002ae6	movl	%eax,0x08(%esp,1)
+00002aea	movl	0x0c(%ebp),%eax
+00002aed	movl	%eax,0x04(%esp,1)
+00002af1	movl	0x08(%ebp),%eax
+00002af4	movl	%eax,(%esp,1)
+00002af7	calll	0x00007046	; symbol stub for: _getopt_long
+00002afc	movl	%eax,0xe4(%ebp)
+00002aff	cmpl	$0xff,0xe4(%ebp)
+00002b03	jnel	0x000028a7
+00002b09	movl	0x0000700c,%eax
+00002b0e	movl	(%eax),%eax
+00002b10	subl	%eax,0x08(%ebp)
+00002b13	movl	0x0000700c,%eax
+00002b18	movl	(%eax),%eax
+00002b1a	shll	$0x02,%eax
+00002b1d	movl	%eax,%edx
+00002b1f	leal	0x0c(%ebp),%eax
+00002b22	addl	%edx,(%eax)
+00002b24	movl	0xe0(%ebp),%eax
+00002b27	leave
+00002b28	ret
+00002b29	nop
+00002b2a	nop
+00002b2b	nop
+
+
+; io_registry_entry_t ????
+
+00002b2c	pushl	%ebp
+00002b2d	movl	%esp,%ebp
+00002b2f	pushl	%ebx
+00002b30	subl	$0x14,%esp
+00002b33	calll	0x00005fec ; bx_thunk
+00002b38	leal	0x000044e0(%ebx),%eax ; offset 0x6018
+00002b3e	movl	(%eax),%eax
+00002b40	movl	(%eax),%edx
+00002b42	leal	0x000029f8(%ebx),%eax "IODeviceTree:/options"
+00002b48	movl	%eax,0x04(%esp,1)
+00002b4c	movl	%edx,(%esp,1)
+00002b4f	calll	0x0000705f	; symbol stub for: _IORegistryEntryFromPath(masterPort, path)
+00002b54	addl	$0x14,%esp
+00002b57	popl	%ebx
+00002b58	popl	%ebp
+00002b59	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; IsDeviceSpecificVendorClass() ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00002b5a	pushl	%ebp
+00002b5b	movl	%esp,%ebp
+00002b5d	pushl	%esi
+00002b5e	pushl	%ebx
+00002b5f	subl	$0x30,%esp
+00002b62	calll	0x00005fec ; bx_thunk
+00002b67	movl	$0x00000000,0xec(%ebp)
+00002b6e	movl	$0x00000000,0xf0(%ebp)
+00002b75	movb	$0x00,0xf7(%ebp)
+00002b79	movb	$0x00,0xeb(%ebp)
+00002b7d	movw	$0x0000,0xe8(%ebp)
+00002b83	leal	0x000044b9(%ebx),%eax
+00002b89	movl	(%eax),%eax
+00002b8b	movl	(%eax),%eax
+00002b8d	leal	0x0000354d(%ebx),%edx
+00002b93	movl	$0x00000000,0x0c(%esp,1)
+00002b9b	movl	%eax,0x08(%esp,1)
+00002b9f	movl	%edx,0x04(%esp,1)
+00002ba3	movl	0x08(%ebp),%eax
+00002ba6	movl	%eax,(%esp,1)
+00002ba9	calll	0x000070d7	; symbol stub for: _IORegistryEntryCreateCFProperty
+00002bae	movl	%eax,0xec(%ebp)
+00002bb1	cmpl	$0x00,0xec(%ebp)
+00002bb5	jne	0x00002bf0
+
+00002bb7	leal	0x00002a0d(%ebx),%eax
+00002bbd	movl	%eax,(%esp,1)
+00002bc0	calll	0x00007037	; symbol stub for: _basename
+00002bc5	movl	%eax,%edx
+00002bc7	leal	0x000029e1(%ebx),%eax
+00002bcd	movl	%eax,0x0c(%esp,1)
+00002bd1	movl	$0x0000003c,0x08(%esp,1)
+00002bd9	movl	%edx,0x04(%esp,1)
+00002bdd	leal	0x00002a2d(%ebx),%eax ; "%s:%d:%s: 'bDeviceClass' property not found"
+00002be3	movl	%eax,(%esp,1)
+00002be6	calll	0x0000703c	; symbol stub for: _printf
+00002beb	jmpl	0x00002cdc
+
+00002bf0	calll	0x00007082	; symbol stub for: _CFNumberGetTypeID
+00002bf5	movl	%eax,%esi
+00002bf7	movl	0xec(%ebp),%eax
+00002bfa	movl	%eax,(%esp,1)
+00002bfd	calll	0x00007064	; symbol stub for: _CFGetTypeID
+00002c02	cmpl	%eax,%esi
+00002c04	je	0x00002c50
+
+00002c06	movl	0xec(%ebp),%eax
+00002c09	movl	%eax,(%esp,1)
+00002c0c	calll	0x00007064	; symbol stub for: _CFGetTypeID
+00002c11	movl	%eax,%esi
+00002c13	leal	0x00002a0d(%ebx),%eax
+00002c19	movl	%eax,(%esp,1)
+00002c1c	calll	0x00007037	; symbol stub for: _basename
+00002c21	movl	%eax,%edx
+00002c23	movl	%esi,0x10(%esp,1)
+00002c27	leal	0x000029e1(%ebx),%eax
+00002c2d	movl	%eax,0x0c(%esp,1)
+00002c31	movl	$0x00000042,0x08(%esp,1)
+00002c39	movl	%edx,0x04(%esp,1)
+00002c3d	leal	0x00002a5d(%ebx),%eax ; "%s:%d:%s: 'bDeviceClass' not data type %u'
+00002c43	movl	%eax,(%esp,1)
+00002c46	calll	0x0000703c	; symbol stub for: _printf
+00002c4b	jmpl	0x00002cdc
+
+00002c50	movl	0xec(%ebp),%eax
+00002c53	leal	0xeb(%ebp),%edx
+00002c56	movl	%edx,0x08(%esp,1)
+00002c5a	movl	$0x00000001,0x04(%esp,1)
+00002c62	movl	%eax,(%esp,1)
+00002c65	calll	0x0000709b	; symbol stub for: _CFNumberGetValue
+00002c6a	movzbl	0xeb(%ebp),%eax
+00002c6e	cmpb	$0xff,%al
+00002c70	jne	0x00002c78
+
+00002c72	movb	$0x01,0xf7(%ebp)
+00002c76	jmp	0x00002cdc
+00002c78	leal	0x000044b9(%ebx),%eax
+00002c7e	movl	(%eax),%eax
+00002c80	movl	(%eax),%eax
+00002c82	leal	0x0000355d(%ebx),%edx
+00002c88	movl	$0x00000000,0x0c(%esp,1)
+00002c90	movl	%eax,0x08(%esp,1)
+00002c94	movl	%edx,0x04(%esp,1)
+00002c98	movl	0x08(%ebp),%eax
+00002c9b	movl	%eax,(%esp,1)
+00002c9e	calll	0x000070d7	; symbol stub for: _IORegistryEntryCreateCFProperty
+00002ca3	movl	%eax,0xf0(%ebp)
+00002ca6	cmpl	$0x00,0xf0(%ebp)
+00002caa	je	0x00002cdc
+
+00002cac	calll	0x00007082	; symbol stub for: _CFNumberGetTypeID
+00002cb1	movl	%eax,%esi
+00002cb3	movl	0xf0(%ebp),%eax
+00002cb6	movl	%eax,(%esp,1)
+00002cb9	calll	0x00007064	; symbol stub for: _CFGetTypeID
+00002cbe	cmpl	%eax,%esi
+00002cc0	jne	0x00002cdc
+
+00002cc2	movl	0xf0(%ebp),%edx
+00002cc5	leal	0xe8(%ebp),%eax
+00002cc8	movl	%eax,0x08(%esp,1)
+00002ccc	movl	$0x00000002,0x04(%esp,1)
+00002cd4	movl	%edx,(%esp,1)
+00002cd7	calll	0x0000709b	; symbol stub for: _CFNumberGetValue
+00002cdc	cmpl	$0x00,0xec(%ebp)
+00002ce0	je	0x00002ced
+00002ce2	movl	0xec(%ebp),%eax
+00002ce5	movl	%eax,(%esp,1)
+00002ce8	calll	0x000070e1	; symbol stub for: _CFRelease
+00002ced	cmpl	$0x00,0xf0(%ebp)
+00002cf1	je	0x00002cfe
+00002cf3	movl	0xf0(%ebp),%eax
+00002cf6	movl	%eax,(%esp,1)
+00002cf9	calll	0x000070e1	; symbol stub for: _CFRelease
+00002cfe	movzbl	0xf7(%ebp),%eax
+00002d02	addl	$0x30,%esp
+00002d05	popl	%ebx
+00002d06	popl	%esi
+00002d07	popl	%ebp
+00002d08	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; io_object_t *GetInterfaceWithName(char *name) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00002d09	pushl	%ebp
+00002d0a	movl	%esp,%ebp
+00002d0c	pushl	%esi
+00002d0d	pushl	%ebx
+00002d0e	subl	$0x30,%esp
+00002d11	calll	0x00005fec ; bx_thunk
+00002d16	movl	$0x00000000,0xf0(%ebp)
+00002d1d	movl	$0x00000000,0xec(%ebp)
+00002d24	movl	$0x00000000,0xf4(%ebp)
+00002d2b	leal	0x00004302(%ebx),%eax ; offset 0x6018
+00002d31	movl	(%eax),%eax
+00002d33	movl	(%eax),%edx
+00002d35	leal	0xec(%ebp),%eax
+00002d38	movl	%eax,0x0c(%esp,1) ; 0
+00002d3c	movl	$0x00000001,0x08(%esp,1)
+00002d44	leal	0x000028fe(%ebx),%eax ; "IOService" (kIOUSBDeviceClassName)
+00002d4a	movl	%eax,0x04(%esp,1)
+00002d4e	movl	%edx,(%esp,1)
+00002d51	calll	0x00007087	; symbol stub for: kern_return_t _IORegistryCreateIterator(masterPort, plane, options, iterator)
+00002d56	movl	%eax,0xf0(%ebp)
+00002d59	cmpl	$0x00,0xf0(%ebp)
+00002d5d	je	0x00002dc4 ; .next
+
+00002d5f	movl	0xf0(%ebp),%esi
+00002d62	leal	0x0000285e(%ebx),%eax
+00002d68	movl	%eax,(%esp,1)
+00002d6b	calll	0x00007037	; symbol stub for: _basename
+00002d70	movl	%eax,%edx
+00002d72	movl	%esi,0x10(%esp,1)
+00002d76	leal	0x000028e6(%ebx),%eax
+00002d7c	movl	%eax,0x0c(%esp,1)
+00002d80	movl	$0x0000006c,0x08(%esp,1)
+00002d88	movl	%edx,0x04(%esp,1)
+00002d8c	leal	0x0000290a(%ebx),%eax ; "%s:%d:%s: IORegistryCreateIterator() error %08lx"
+00002d92	movl	%eax,(%esp,1)
+00002d95	calll	0x0000703c	; symbol stub for: _printf
+00002d9a	jmp	0x00002dd8
+
+.check:
+00002d9c	movl	0x08(%ebp),%eax
+00002d9f	movl	%eax,0x04(%esp,1) ; name
+00002da3	movl	0xf4(%ebp),%eax ; 0
+00002da6	movl	%eax,(%esp,1)
+00002da9	calll	0x000070be	; symbol stub for: _IOObjectConformsTo(object, name)
+00002dae	testl	%eax,%eax
+00002db0	jne	0x00002dd8 ; .found
+
+00002db2	movl	0xf4(%ebp),%eax
+00002db5	movl	%eax,(%esp,1)
+00002db8	calll	0x00007073	; symbol stub for: _IOObjectRelease
+00002dbd	movl	$0x00000000,0xf4(%ebp)
+
+.next:
+00002dc4	movl	0xec(%ebp),%eax ; iterator
+00002dc7	movl	%eax,(%esp,1)
+00002dca	calll	0x0000705a	; symbol stub for: _IOIteratorNext
+00002dcf	movl	%eax,0xf4(%ebp)
+00002dd2	cmpl	$0x00,0xf4(%ebp)
+00002dd6	jne	0x00002d9c ; .check
+
+.found:
+00002dd8	movl	0xec(%ebp),%eax
+00002ddb	testl	%eax,%eax
+00002ddd	je	0x00002dea
+
+00002ddf	movl	0xec(%ebp),%eax ; iterator
+00002de2	movl	%eax,(%esp,1)
+00002de5	calll	0x00007091	; symbol stub for: _IORegistryDisposeEnumerator
+
+00002dea	movl	0xf4(%ebp),%eax
+00002ded	addl	$0x30,%esp
+00002df0	popl	%ebx
+00002df1	popl	%esi
+00002df2	popl	%ebp
+00002df3	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; io_object_t FindAppleRTC() ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00002df4	pushl	%ebp
+00002df5	movl	%esp,%ebp
+00002df7	pushl	%ebx
+00002df8	subl	$0x34,%esp
+00002dfb	calll	0x00005fec ; bx_thunk
+00002e00	movl	$0x00000000,0xf0(%ebp)
+00002e07	movl	$0x00000000,0xec(%ebp)
+00002e0e	movl	$0x00000000,0xf4(%ebp)
+00002e15	leal	0x00002864(%ebx),%eax ; "AppleRTC"
+00002e1b	movl	%eax,(%esp,1)
+00002e1e	calll	0x00002d09 ; GetInterfaceWithName("AppleRTC")
+00002e23	movl	%eax,0xf4(%ebp)
+00002e26	cmpl	$0x00,0xf4(%ebp)
+00002e2a	jne	0x00002e62 ; .got_interface
+
+00002e2c	leal	0x00002774(%ebx),%eax
+00002e32	movl	%eax,(%esp,1)
+00002e35	calll	0x00007037	; symbol stub for: _basename
+00002e3a	movl	%eax,%edx
+00002e3c	leal	0x00002854(%ebx),%eax
+00002e42	movl	%eax,0x0c(%esp,1)
+00002e46	movl	$0x00000087,0x08(%esp,1)
+00002e4e	movl	%edx,0x04(%esp,1)
+00002e52	leal	0x00002870(%ebx),%eax ; "%s:%d:%s: GetInterfaceWithName() error"
+00002e58	movl	%eax,(%esp,1)
+00002e5b	calll	0x0000703c	; symbol stub for: _printf
+00002e60	jmp	0x00002ed5 ; .done
+
+.got_interface:
+00002e62	leal	0x0000421c(%ebx),%eax
+00002e68	movl	(%eax),%eax
+100002e6a	movl	(%eax),%edx
+00002e6c	leal	0xec(%ebp),%eax
+00002e6f	movl	%eax,0x0c(%esp,1)
+00002e73	movl	$0x0101face,0x08(%esp,1)
+00002e7b	movl	%edx,0x04(%esp,1)
+00002e7f	movl	0xf4(%ebp),%eax
+00002e82	movl	%eax,(%esp,1)
+00002e85	calll	0x000070c3	; symbol stub for: _IOServiceOpen(service, owningTask, type, connect)
+00002e8a	movl	%eax,0xf0(%ebp)
+00002e8d	cmpl	$0x00,0xf0(%ebp)
+00002e91	je	0x00002ed5 ; .done
+
+00002e93	leal	0x00002774(%ebx),%eax
+00002e99	movl	%eax,(%esp,1)
+00002e9c	calll	0x00007037	; symbol stub for: _basename
+00002ea1	movl	%eax,%edx
+00002ea3	movl	0xf0(%ebp),%eax
+00002ea6	movl	%eax,0x10(%esp,1)
+00002eaa	leal	0x00002854(%ebx),%eax
+00002eb0	movl	%eax,0x0c(%esp,1)
+00002eb4	movl	$0x0000008e,0x08(%esp,1)
+00002ebc	movl	%edx,0x04(%esp,1)
+00002ec0	leal	0x00002898(%ebx),%eax ; "%s:%d:%s: IOServiceOpen() error 0x%08x"
+00002ec6	movl	%eax,(%esp,1)
+00002ec9	calll	0x0000703c	; symbol stub for: _printf
+00002ece	movl	$0x00000000,0xec(%ebp)
+
+.done:
+00002ed5	movl	0xec(%ebp),%eax
+00002ed8	addl	$0x34,%esp
+00002edb	popl	%ebx
+00002edc	popl	%ebp
+00002edd	ret
+
+
+;;;;;;;;;;;;;;;;;;;
+; CloseIRDevice() ;
+;;;;;;;;;;;;;;;;;;;
+
+00002ede	pushl	%ebp
+00002edf	movl	%esp,%ebp
+00002ee1	pushl	%ebx
+00002ee2	subl	$0x34,%esp
+00002ee5	calll	0x00005fec ; bx_thunk
+00002eea	movl	0x08(%ebp),%eax
+00002eed	movl	(%eax),%eax
+00002eef	movl	0x24(%eax),%edx
+00002ef2	movl	0x08(%ebp),%eax
+00002ef5	movl	%eax,(%esp,1)
+00002ef8	call	*%edx ; USBDeviceClose(self)
+00002efa	movl	%eax,0xf4(%ebp)
+00002efd	cmpl	$0x00,0xf4(%ebp)
+00002f01	je	0x00002f3e
+
+00002f03	leal	0x0000268a(%ebx),%eax
+00002f09	movl	%eax,(%esp,1)
+00002f0c	calll	0x00007037	; symbol stub for: _basename
+00002f11	movl	%eax,%edx
+00002f13	movl	0xf4(%ebp),%eax
+00002f16	movl	%eax,0x10(%esp,1)
+00002f1a	leal	0x000027d6(%ebx),%eax
+00002f20	movl	%eax,0x0c(%esp,1)
+00002f24	movl	$0x0000009a,0x08(%esp,1)
+00002f2c	movl	%edx,0x04(%esp,1)
+00002f30	leal	0x000027e6(%ebx),%eax ; "%s:%d:%s: CloseIRDevice: USBDeviceClose failed: 0x%x"
+00002f36	movl	%eax,(%esp,1)
+00002f39	calll	0x0000703c	; symbol stub for: _printf
+
+00002f3e	movl	0x08(%ebp),%eax
+00002f41	movl	(%eax),%eax
+00002f43	movl	0x0c(%eax),%edx
+00002f46	movl	0x08(%ebp),%eax
+00002f49	movl	%eax,(%esp,1)
+00002f4c	call	*%edx ; Release(self)
+00002f4e	movl	%eax,0xf4(%ebp)
+00002f51	cmpl	$0x00,0xf4(%ebp)
+00002f55	je	0x00002f92
+
+00002f57	leal	0x0000268a(%ebx),%eax
+00002f5d	movl	%eax,(%esp,1)
+00002f60	calll	0x00007037	; symbol stub for: _basename
+00002f65	movl	%eax,%edx
+00002f67	movl	0xf4(%ebp),%eax
+00002f6a	movl	%eax,0x10(%esp,1)
+00002f6e	leal	0x000027d6(%ebx),%eax
+00002f74	movl	%eax,0x0c(%esp,1)
+00002f78	movl	$0x0000009c,0x08(%esp,1)
+00002f80	movl	%edx,0x04(%esp,1)
+00002f84	leal	0x0000281e(%ebx),%eax ; "%s:%d:%s: CloseIRDevice: Release failed: 0x%x"
+00002f8a	movl	%eax,(%esp,1)
+00002f8d	calll	0x0000703c	; symbol stub for: _printf
+
+00002f92	addl	$0x34,%esp
+00002f95	popl	%ebx
+00002f96	popl	%ebp
+00002f97	ret
+
+
+;;;;;;;;;;;;;;;;;;
+; FindIRDevice() ;
+;;;;;;;;;;;;;;;;;;
+
+00002f98	pushl	%ebp
+00002f99	movl	%esp,%ebp
+00002f9b	pushl	%edi
+00002f9c	pushl	%esi
+00002f9d	pushl	%ebx
+00002f9e	subl	$0x000000ac,%esp
+00002fa4	calll	0x00005fec ; bx_thunk
+00002fa9	movl	$0x00000000,0xc0(%ebp)
+00002fb0	movl	$0x00000000,0xbc(%ebp)
+00002fb7	leal	0x0000279f(%ebx),%eax ; "IOUSBDevice"
+00002fbd	movl	%eax,(%esp,1)
+00002fc0	calll	0x000070b4	; symbol stub for: _IOServiceMatching("IOUSBDevice")
+00002fc5	movl	%eax,0xd8(%ebp)
+00002fc8	cmpl	$0x00,0xd8(%ebp)
+00002fcc	jne	0x00003007
+
+00002fce	leal	0x000025cb(%ebx),%eax
+00002fd4	movl	%eax,(%esp,1)
+00002fd7	calll	0x00007037	; symbol stub for: _basename
+00002fdc	movl	%eax,%edx
+00002fde	leal	0x0000278f(%ebx),%eax
+00002fe4	movl	%eax,0x0c(%esp,1)
+00002fe8	movl	$0x000000ae,0x08(%esp,1)
+00002ff0	movl	%edx,0x04(%esp,1)
+00002ff4	leal	0x000027ab(%ebx),%eax "%s:%d:%s: Can't create a USB device matching dictionary"
+00002ffa	movl	%eax,(%esp,1)
+00002ffd	calll	0x0000703c	; symbol stub for: _printf
+00003002	jmpl	0x000034d7
+
+00003007	leal	0x00004077(%ebx),%eax ; offset 0x6020
+0000300d	movl	(%eax),%eax
+0000300f	movl	(%eax),%edx
+00003011	leal	0x000030ff(%ebx),%eax ; offset 0x50a8 (0x05ac - Apple vendor ID)
+00003017	movl	%eax,0x08(%esp,1)
+0000301b	movl	$0x00000003,0x04(%esp,1) ; kCFNumberSInt32Type
+00003023	movl	%edx,(%esp,1)
+00003026	calll	0x000070b9	; symbol stub for: _CFNumberCreate
+0000302b	movl	%eax,0xdc(%ebp)
+0000302e	cmpl	$0x00,0xdc(%ebp)
+00003032	jne	0x00003074
+
+00003034	leal	0x000025cb(%ebx),%eax
+0000303a	movl	%eax,(%esp,1)
+0000303d	calll	0x00007037	; symbol stub for: _basename
+00003042	movl	%eax,%edx
+00003044	leal	0x0000278f(%ebx),%eax
+0000304a	movl	%eax,0x0c(%esp,1)
+0000304e	movl	$0x000000b5,0x08(%esp,1)
+00003056	movl	%edx,0x04(%esp,1)
+0000305a	leal	0x000027e7(%ebx),%eax ; "%s:%d:%s: could not create CFNumberRef for vendor"
+00003060	movl	%eax,(%esp,1)
+00003063	calll	0x0000703c	; symbol stub for: _printf
+00003068	movl	$0x00000000,0xa4(%ebp)
+0000306f	jmpl	0x00003505
+
+00003074	leal	0x0000312b(%ebx),%edx
+0000307a	movl	0xdc(%ebp),%eax
+0000307d	movl	%eax,0x08(%esp,1)
+00003081	movl	%edx,0x04(%esp,1)
+00003085	movl	0xd8(%ebp),%eax
+00003088	movl	%eax,(%esp,1)
+0000308b	calll	0x00007069	; symbol stub for: _CFDictionarySetValue
+00003090	movl	0xdc(%ebp),%eax
+00003093	movl	%eax,(%esp,1)
+00003096	calll	0x000070e1	; symbol stub for: _CFRelease
+0000309b	leal	0x00004077(%ebx),%eax
+000030a1	movl	(%eax),%eax
+000030a3	movl	(%eax),%edx
+000030a5	leal	0x000030fb(%ebx),%eax ; offset 0x50a4 (0x8241 - IR product ID)
+000030ab	movl	%eax,0x08(%esp,1)
+000030af	movl	$0x00000003,0x04(%esp,1) ; kCFNumberSInt32Type
+000030b7	movl	%edx,(%esp,1)
+000030ba	calll	0x000070b9	; symbol stub for: _CFNumberCreate
+000030bf	movl	%eax,0xdc(%ebp)
+000030c2	cmpl	$0x00,0xdc(%ebp)
+000030c6	jne	0x00003108
+
+000030c8	leal	0x000025cb(%ebx),%eax
+000030ce	movl	%eax,(%esp,1)
+000030d1	calll	0x00007037	; symbol stub for: _basename
+000030d6	movl	%eax,%edx
+000030d8	leal	0x0000278f(%ebx),%eax
+000030de	movl	%eax,0x0c(%esp,1)
+000030e2	movl	$0x000000be,0x08(%esp,1)
+000030ea	movl	%edx,0x04(%esp,1)
+000030ee	leal	0x000027e7(%ebx),%eax ; "%s:%d:%s: could not create CFNumberRef for vendor"
+000030f4	movl	%eax,(%esp,1)
+000030f7	calll	0x0000703c	; symbol stub for: _printf
+000030fc	movl	$0x00000000,0xa4(%ebp)
+00003103	jmpl	0x00003505
+
+00003108	leal	0x0000311b(%ebx),%edx
+0000310e	movl	0xdc(%ebp),%eax
+00003111	movl	%eax,0x08(%esp,1)
+00003115	movl	%edx,0x04(%esp,1)
+00003119	movl	0xd8(%ebp),%eax
+0000311c	movl	%eax,(%esp,1)
+0000311f	calll	0x00007069	; symbol stub for: _CFDictionarySetValue
+00003124	movl	0xdc(%ebp),%eax
+00003127	movl	%eax,(%esp,1)
+0000312a	calll	0x000070e1	; symbol stub for: _CFRelease
+0000312f	leal	0x0000406f(%ebx),%eax ; offset 0x6018
+00003135	movl	(%eax),%eax
+00003137	movl	(%eax),%edx
+00003139	movl	0xd8(%ebp),%eax
+0000313c	movl	%eax,0x04(%esp,1)
+00003140	movl	%edx,(%esp,1)
+00003143	calll	0x00007055	; symbol stub for: _IOServiceGetMatchingService
+00003148	movl	%eax,0xe4(%ebp)
+0000314b	cmpl	$0x00,0xe4(%ebp)
+0000314f	jne	0x0000318a
+
+00003151	leal	0x000025cb(%ebx),%eax
+00003157	movl	%eax,(%esp,1)
+0000315a	calll	0x00007037	; symbol stub for: _basename
+0000315f	movl	%eax,%edx
+00003161	leal	0x0000278f(%ebx),%eax
+00003167	movl	%eax,0x0c(%esp,1)
+0000316b	movl	$0x000000c8,0x08(%esp,1)
+00003173	movl	%edx,0x04(%esp,1)
+00003177	leal	0x00002827(%ebx),%eax ; "%s:%d:%s: Didn't get myDeviceService"
+0000317d	movl	%eax,(%esp,1)
+00003180	calll	0x0000703c	; symbol stub for: _printf
+00003185	jmpl	0x000034d7
+
+0000318a	movl	0xe4(%ebp),%eax
+0000318d	movl	%eax,(%esp,1)
+00003190	calll	0x00002b5a ; IsDeviceSpecificVendorClass()
+00003195	movzbl	%al,%eax
+00003198	testl	%eax,%eax
+0000319a	jnel	0x000034d7
+
+000031a0	movl	$0x0000006f,0x40(%esp,1)
+000031a8	movl	$0x00000042,0x3c(%esp,1)
+000031b0	movl	$0x000000c6,0x38(%esp,1)
+000031b8	movl	$0x000000e4,0x34(%esp,1)
+000031c0	movl	$0x00000050,0x30(%esp,1)
+000031c8	movl	$0x00000000,0x2c(%esp,1)
+000031d0	movl	$0x000000d4,0x28(%esp,1)
+000031d8	movl	$0x00000091,0x24(%esp,1)
+000031e0	movl	$0x000000d4,0x20(%esp,1)
+000031e8	movl	$0x00000011,0x1c(%esp,1)
+000031f0	movl	$0x0000009c,0x18(%esp,1)
+000031f8	movl	$0x00000010,0x14(%esp,1)
+00003200	movl	$0x00000058,0x10(%esp,1)
+00003208	movl	$0x000000e8,0x0c(%esp,1)
+00003210	movl	$0x00000044,0x08(%esp,1)
+00003218	movl	$0x000000c2,0x04(%esp,1)
+00003220	movl	$0x00000000,(%esp,1) ; C244E858-109C-11D4-91D4-0050E4C6426F (kIOCFPlugInInterfaceID)
+00003227	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+0000322c	movl	%eax,%esi
+0000322e	movl	$0x00000061,0x40(%esp,1)
+00003236	movl	$0x00000028,0x3c(%esp,1)
+0000323e	movl	$0x00000005,0x38(%esp,1)
+00003246	movl	$0x00000027,0x34(%esp,1)
+0000324e	movl	$0x0000000a,0x30(%esp,1)
+00003256	movl	$0x00000000,0x2c(%esp,1)
+0000325e	movl	$0x0000004f,0x28(%esp,1)
+00003266	movl	$0x000000a5,0x24(%esp,1)
+0000326e	movl	$0x000000d4,0x20(%esp,1)
+00003276	movl	$0x00000011,0x1c(%esp,1)
+0000327e	movl	$0x000000c0,0x18(%esp,1)
+00003286	movl	$0x0000009e,0x14(%esp,1)
+0000328e	movl	$0x00000080,0x10(%esp,1)
+00003296	movl	$0x000000b7,0x0c(%esp,1)
+0000329e	movl	$0x000000c7,0x08(%esp,1)
+000032a6	movl	$0x0000009d,0x04(%esp,1)
+000032ae	movl	$0x00000000,(%esp,1) ; 9DC7B780-9EC0-11D4-A54F-000A27052861 (kIOUSBDeviceUserClientTypeID)
+000032b5	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+000032ba	movl	%eax,%edx
+000032bc	leal	0xc4(%ebp),%eax
+000032bf	movl	%eax,0x10(%esp,1)
+000032c3	leal	0xc0(%ebp),%eax
+000032c6	movl	%eax,0x0c(%esp,1)
+000032ca	movl	%esi,0x08(%esp,1)
+000032ce	movl	%edx,0x04(%esp,1)
+000032d2	movl	0xe4(%ebp),%eax
+000032d5	movl	%eax,(%esp,1)
+000032d8	calll	0x0000706e	; symbol stub for: _IOCreatePlugInInterfaceForService
+000032dd	movl	%eax,0xe0(%ebp)
+000032e0	cmpl	$0x00,0xe0(%ebp)
+000032e4	jne	0x000032ed
+000032e6	movl	0xc0(%ebp),%eax
+000032e9	testl	%eax,%eax
+000032eb	jne	0x00003334
+
+000032ed	movl	0xc0(%ebp),%esi
+000032f0	leal	0x000025cb(%ebx),%eax
+000032f6	movl	%eax,(%esp,1)
+000032f9	calll	0x00007037	; symbol stub for: _basename
+000032fe	movl	%eax,%edx
+00003300	movl	%esi,0x14(%esp,1)
+00003304	movl	0xe0(%ebp),%eax
+00003307	movl	%eax,0x10(%esp,1)
+0000330b	leal	0x0000278f(%ebx),%eax
+00003311	movl	%eax,0x0c(%esp,1)
+00003315	movl	$0x000000d4,0x08(%esp,1)
+0000331d	movl	%edx,0x04(%esp,1)
+00003321	leal	0x0000284f(%ebx),%eax ; "%s:%d:%s: unable to create plugin. ret = %08x, ioDev = %p"
+00003327	movl	%eax,(%esp,1)
+0000332a	calll	0x0000703c	; symbol stub for: _printf
+0000332f	jmpl	0x000034d7
+
+00003334	movl	0xc0(%ebp),%eax
+00003337	movl	(%eax),%eax
+00003339	movl	0x04(%eax),%esi
+0000333c	leal	0xbc(%ebp),%edi
+0000333f	movl	$0x0000003e,0x40(%esp,1)
+00003347	movl	$0x0000003e,0x3c(%esp,1)
+0000334f	movl	$0x0000003e,0x38(%esp,1)
+00003357	movl	$0x00000093,0x34(%esp,1)
+0000335f	movl	$0x00000003,0x30(%esp,1)
+00003367	movl	$0x00000000,0x2c(%esp,1)
+0000336f	movl	$0x00000096,0x28(%esp,1)
+00003377	movl	$0x000000bb,0x24(%esp,1)
+0000337f	movl	$0x000000d7,0x20(%esp,1)
+00003387	movl	$0x00000011,0x1c(%esp,1)
+0000338f	movl	$0x00000084,0x18(%esp,1)
+00003397	movl	$0x00000008,0x14(%esp,1)
+0000339f	movl	$0x000000d8,0x10(%esp,1)
+000033a7	movl	$0x000000b8,0x0c(%esp,1)
+000033af	movl	$0x00000009,0x08(%esp,1)
+000033b7	movl	$0x000000c8,0x04(%esp,1)
+000033bf	movl	$0x00000000,(%esp,1) ; C809B8D8-0884-11D7-BB96-0003933E3E3E (kIOUSBDeviceInterfaceID197)
+000033c6	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+000033cb	leal	0xa8(%ebp),%edx
+000033ce	movl	%eax,0x04(%esp,1)
+000033d2	movl	%edx,(%esp,1)
+000033d5	calll	0x000070aa	; symbol stub for: _CFUUIDGetUUIDBytes
+000033da	subl	$0x04,%esp
+000033dd	movl	0xa8(%ebp),%eax
+000033e0	movl	%eax,0xc8(%ebp)
+000033e3	movl	0xac(%ebp),%eax
+000033e6	movl	%eax,0xcc(%ebp)
+000033e9	movl	0xb0(%ebp),%eax
+000033ec	movl	%eax,0xd0(%ebp)
+000033ef	movl	0xb4(%ebp),%eax
+000033f2	movl	%eax,0xd4(%ebp)
+000033f5	movl	0xc0(%ebp),%edx
+000033f8	movl	%edi,0x14(%esp,1)
+000033fc	movl	0xc8(%ebp),%eax
+000033ff	movl	%eax,0x04(%esp,1)
+00003403	movl	0xcc(%ebp),%eax
+00003406	movl	%eax,0x08(%esp,1)
+0000340a	movl	0xd0(%ebp),%eax
+0000340d	movl	%eax,0x0c(%esp,1)
+00003411	movl	0xd4(%ebp),%eax
+00003414	movl	%eax,0x10(%esp,1)
+00003418	movl	%edx,(%esp,1)
+0000341b	call	*%esi
+0000341d	movl	%eax,0xe0(%ebp)
+00003420	cmpl	$0x00,0xe0(%ebp)
+00003424	jne	0x0000342d
+00003426	movl	0xbc(%ebp),%eax
+00003429	testl	%eax,%eax
+0000342b	jne	0x00003471
+
+0000342d	movl	0xbc(%ebp),%esi
+00003430	leal	0x000025cb(%ebx),%eax
+00003436	movl	%eax,(%esp,1)
+00003439	calll	0x00007037	; symbol stub for: _basename
+0000343e	movl	%eax,%edx
+00003440	movl	%esi,0x14(%esp,1)
+00003444	movl	0xe0(%ebp),%eax
+00003447	movl	%eax,0x10(%esp,1)
+0000344b	leal	0x0000278f(%ebx),%eax
+00003451	movl	%eax,0x0c(%esp,1)
+00003455	movl	$0x000000dc,0x08(%esp,1)
+0000345d	movl	%edx,0x04(%esp,1)
+00003461	leal	0x0000288b(%ebx),%eax ; "%s:%d:%s: unable to create a device interface. ret = %08x, dev = %p"
+00003467	movl	%eax,(%esp,1)
+0000346a	calll	0x0000703c	; symbol stub for: _printf
+0000346f	jmp	0x000034d7
+
+00003471	movl	0xbc(%ebp),%eax
+00003474	movl	(%eax),%eax
+00003476	movl	0x20(%eax),%edx
+00003479	movl	0xbc(%ebp),%eax
+0000347c	movl	%eax,(%esp,1)
+0000347f	call	*%edx
+00003481	movl	%eax,0xe0(%ebp)
+00003484	cmpl	$0x00,0xe0(%ebp)
+00003488	je	0x000034d7
+
+0000348a	leal	0x000025cb(%ebx),%eax
+00003490	movl	%eax,(%esp,1)
+00003493	calll	0x00007037	; symbol stub for: _basename
+00003498	movl	%eax,%edx
+0000349a	movl	0xe0(%ebp),%eax
+0000349d	movl	%eax,0x10(%esp,1)
+000034a1	leal	0x0000278f(%ebx),%eax
+000034a7	movl	%eax,0x0c(%esp,1)
+000034ab	movl	$0x000000e3,0x08(%esp,1)
+000034b3	movl	%edx,0x04(%esp,1)
+000034b7	leal	0x000028d3(%ebx),%eax ; "%s:%d:%s: Error 0x%x opening device for suspend"
+000034bd	movl	%eax,(%esp,1)
+000034c0	calll	0x0000703c	; symbol stub for: _printf
+000034c5	movl	0xbc(%ebp),%eax
+000034c8	movl	%eax,(%esp,1)
+000034cb	calll	0x00002ede ; CloseIRDevice()
+000034d0	movl	$0x00000000,0xbc(%ebp)
+
+000034d7	cmpl	$0x00,0xe4(%ebp)
+000034db	je	0x000034e8
+000034dd	movl	0xe4(%ebp),%eax
+000034e0	movl	%eax,(%esp,1)
+000034e3	calll	0x00007073	; symbol stub for: _IOObjectRelease
+000034e8	movl	0xc0(%ebp),%eax
+000034eb	testl	%eax,%eax
+000034ed	je	0x000034ff
+
+000034ef	movl	0xc0(%ebp),%eax
+000034f2	movl	(%eax),%eax
+000034f4	movl	0x0c(%eax),%edx
+000034f7	movl	0xc0(%ebp),%eax
+000034fa	movl	%eax,(%esp,1)
+000034fd	call	*%edx
+
+000034ff	movl	0xbc(%ebp),%eax
+00003502	movl	%eax,0xa4(%ebp)
+00003505	movl	0xa4(%ebp),%eax
+00003508	leal	0xf4(%ebp),%esp
+0000350b	popl	%ebx
+0000350c	popl	%esi
+0000350d	popl	%edi
+0000350e	popl	%ebp
+0000350f	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; IRDeviceReport(data, bufsize, out) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; send usb control message to IR device
+00003510	pushl	%ebp
+00003511	movl	%esp,%ebp
+00003513	pushl	%ebx
+00003514	subl	$0x54,%esp
+00003517	calll	0x00005fec ; bx_thunk
+0000351c	movl	0x10(%ebp),%eax
+0000351f	movb	%al,0xd4(%ebp)
+00003522	movl	$0xffffffff,0xec(%ebp)
+00003529	cmpl	$0x00,0x0c(%ebp) ; bufsize
+0000352d	jg	0x00003576
+
+0000352f	leal	0x00002058(%ebx),%eax
+00003535	movl	%eax,(%esp,1)
+00003538	calll	0x00007037	; symbol stub for: _basename
+0000353d	movl	%eax,%edx
+0000353f	movl	0x0c(%ebp),%eax
+00003542	movl	%eax,0x10(%esp,1)
+00003546	leal	0x00002394(%ebx),%eax
+0000354c	movl	%eax,0x0c(%esp,1)
+00003550	movl	$0x000000f4,0x08(%esp,1)
+00003558	movl	%edx,0x04(%esp,1)
+0000355c	leal	0x000023a4(%ebx),%eax ; "%s:%d:%s: invalid bufSize %d"
+00003562	movl	%eax,(%esp,1)
+00003565	calll	0x0000703c	; symbol stub for: _printf
+0000356a	movl	$0xffffffff,0xcc(%ebp)
+00003571	jmpl	0x00003713
+
+00003576	calll	0x00002f98 ; FindIRDevice()
+0000357b	movl	%eax,0xf0(%ebp)
+0000357e	cmpl	$0x00,0xf0(%ebp)
+00003582	jne	0x000035c4 ; .found_device
+
+00003584	leal	0x00002058(%ebx),%eax
+0000358a	movl	%eax,(%esp,1)
+0000358d	calll	0x00007037	; symbol stub for: _basename
+00003592	movl	%eax,%edx
+00003594	leal	0x00002394(%ebx),%eax
+0000359a	movl	%eax,0x0c(%esp,1)
+0000359e	movl	$0x000000fb,0x08(%esp,1)
+000035a6	movl	%edx,0x04(%esp,1)
+000035aa	leal	0x000023c4(%ebx),%eax "%s:%d:%s: can't find IR device"
+000035b0	movl	%eax,(%esp,1)
+000035b3	calll	0x0000703c	; symbol stub for: _printf
+000035b8	movl	$0xffffffff,0xcc(%ebp)
+000035bf	jmpl	0x00003713
+
+.found_device:
+000035c4	movl	$0x00000000,0xdc(%ebp) ; zero out struct IOUSBDevRequest
+000035cb	movl	$0x00000000,0xe0(%ebp)
+000035d2	movl	$0x00000000,0xe4(%ebp)
+000035d9	movl	$0x00000000,0xe8(%ebp)
+000035e0	movzbl	0xd4(%ebp),%eax ; direction (0 = in)
+000035e4	testl	%eax,%eax
+000035e6	jne	0x000035ee
+
+000035e8	movb	$0xa1,0xd2(%ebp) ; in (to host), class, interface
+000035ec	jmp	0x000035f2
+
+000035ee	movb	$0x21,0xd2(%ebp) ; out (to device), class, interface
+
+000035f2	movzbl	0xd2(%ebp),%eax
+000035f6	movb	%al,0xdc(%ebp) ; bmRequestType (0xa1 / 0x21)
+000035f9	movzbl	0xd4(%ebp),%eax ; direction (0 = in)
+000035fd	testl	%eax,%eax
+000035ff	je	0x00003607
+
+00003601	movb	$0x09,0xd3(%ebp) ; out
+00003605	jmp	0x0000360b
+
+00003607	movb	$0x01,0xd3(%ebp) ; in
+
+0000360b	movzbl	0xd3(%ebp),%eax
+0000360f	movb	%al,0xdd(%ebp) ; bRequest (1 / 9)
+00003612	movl	0x08(%ebp),%eax ; data
+00003615	movzbl	(%eax),%eax
+00003618	cbtw ; signextend al to ax
+0000361a	andw	$0x00ff,%ax
+0000361e	orb	$0x03,%ah
+00003621	movw	%ax,0xde(%ebp) ; wValue (data[0] | 0x300)
+00003625	movw	$0x0000,0xe0(%ebp) ; wIndex
+0000362b	movl	0x0c(%ebp),%eax ; bufsize
+0000362e	movw	%ax,0xe2(%ebp) ; wLength
+00003632	movl	0x08(%ebp),%eax ; data
+00003635	movl	%eax,0xe4(%ebp) ; pData
+00003638	movl	$0x00000000,0xe8(%ebp) ; wLenDone
+0000363f	movl	0xf0(%ebp),%eax
+00003642	movl	(%eax),%eax
+00003644	movl	0x00000080(%eax),%edx
+0000364a	movl	$0x00000000,0x04(%esp,1)
+00003652	movl	0xf0(%ebp),%eax
+00003655	movl	%eax,(%esp,1)
+00003658	call	*%edx ; IOReturn (*USBDeviceSuspend)(void *self, Boolean suspend)
+0000365a	movl	%eax,0xf4(%ebp)
+0000365d	cmpl	$0x00,0xf4(%ebp)
+00003661	je	0x0000369e
+
+00003663	leal	0x00002058(%ebx),%eax
+00003669	movl	%eax,(%esp,1)
+0000366c	calll	0x00007037	; symbol stub for: _basename
+00003671	movl	%eax,%edx
+00003673	movl	0xf4(%ebp),%eax
+00003676	movl	%eax,0x10(%esp,1)
+0000367a	leal	0x00002394(%ebx),%eax
+00003680	movl	%eax,0x0c(%esp,1)
+00003684	movl	$0x0000010d,0x08(%esp,1)
+0000368c	movl	%edx,0x04(%esp,1)
+00003690	leal	0x000023e4(%ebx),%eax ; "%s:%d:%s: USBDeviceSuspend failed (0x%x)"
+00003696	movl	%eax,(%esp,1)
+00003699	calll	0x0000703c	; symbol stub for: _printf
+
+0000369e	movl	0xf0(%ebp),%eax
+000036a1	movl	(%eax),%eax
+000036a3	movl	0x68(%eax),%edx
+000036a6	leal	0xdc(%ebp),%eax
+000036a9	movl	%eax,0x04(%esp,1)
+000036ad	movl	0xf0(%ebp),%eax
+000036b0	movl	%eax,(%esp,1)
+000036b3	call	*%edx ; IOReturn (*DeviceRequest)(void *self, IOUSBDevRequest *req)
+000036b5	movl	%eax,0xf4(%ebp)
+000036b8	cmpl	$0x00,0xf4(%ebp)
+000036bc	jne	0x000036c7
+
+000036be	movl	$0x00000000,0xec(%ebp)
+000036c5	jmp	0x00003702
+
+000036c7	leal	0x00002058(%ebx),%eax
+000036cd	movl	%eax,(%esp,1)
+000036d0	calll	0x00007037	; symbol stub for: _basename
+000036d5	movl	%eax,%edx
+000036d7	movl	0xf4(%ebp),%eax
+000036da	movl	%eax,0x10(%esp,1)
+000036de	leal	0x00002394(%ebx),%eax
+000036e4	movl	%eax,0x0c(%esp,1)
+000036e8	movl	$0x00000117,0x08(%esp,1)
+000036f0	movl	%edx,0x04(%esp,1)
+000036f4	leal	0x00002410(%ebx),%eax ; "%s:%d:%s: DeviceRequest failed (0x%x)"
+000036fa	movl	%eax,(%esp,1)
+000036fd	calll	0x0000703c	; symbol stub for: _printf
+
+00003702	movl	0xf0(%ebp),%eax
+00003705	movl	%eax,(%esp,1)
+00003708	calll	0x00002ede ; CloseIRDevice()
+0000370d	movl	0xec(%ebp),%eax
+00003710	movl	%eax,0xcc(%ebp)
+00003713	movl	0xcc(%ebp),%eax
+00003716	addl	$0x54,%esp
+00003719	popl	%ebx
+0000371a	popl	%ebp
+0000371b	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;
+; CloseIRHIDDevice(a) ;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+0000371c	pushl	%ebp
+0000371d	movl	%esp,%ebp
+0000371f	pushl	%ebx
+00003720	subl	$0x34,%esp
+00003723	calll	0x00005fec ; bx_thunk
+00003728	movl	0x08(%ebp),%eax
+0000372b	movl	(%eax),%eax
+0000372d	movl	0x24(%eax),%edx
+00003730	movl	0x08(%ebp),%eax
+00003733	movl	%eax,(%esp,1)
+00003736	call	*%edx
+00003738	movl	%eax,0xf4(%ebp)
+0000373b	cmpl	$0x00,0xf4(%ebp)
+0000373f	je	0x0000377c
+
+00003741	leal	0x00001e4c(%ebx),%eax
+00003747	movl	%eax,(%esp,1)
+0000374a	calll	0x00007037	; symbol stub for: _basename
+0000374f	movl	%eax,%edx
+00003751	movl	0xf4(%ebp),%eax
+00003754	movl	%eax,0x10(%esp,1)
+00003758	leal	0x0000222c(%ebx),%eax
+0000375e	movl	%eax,0x0c(%esp,1)
+00003762	movl	$0x00000122,0x08(%esp,1)
+0000376a	movl	%edx,0x04(%esp,1)
+0000376e	leal	0x00001fa8(%ebx),%eax ; "%s:%d:%s: CloseIRDevice: USBDeviceClose failed: 0x%x"
+00003774	movl	%eax,(%esp,1)
+00003777	calll	0x0000703c	; symbol stub for: _printf
+
+0000377c	movl	0x08(%ebp),%eax
+0000377f	movl	(%eax),%eax
+00003781	movl	0x0c(%eax),%edx
+00003784	movl	0x08(%ebp),%eax
+00003787	movl	%eax,(%esp,1)
+0000378a	call	*%edx
+0000378c	movl	%eax,0xf4(%ebp)
+0000378f	cmpl	$0x00,0xf4(%ebp)
+00003793	je	0x000037d0
+
+00003795	leal	0x00001e4c(%ebx),%eax
+0000379b	movl	%eax,(%esp,1)
+0000379e	calll	0x00007037	; symbol stub for: _basename
+000037a3	movl	%eax,%edx
+000037a5	movl	0xf4(%ebp),%eax
+000037a8	movl	%eax,0x10(%esp,1)
+000037ac	leal	0x0000222c(%ebx),%eax
+000037b2	movl	%eax,0x0c(%esp,1)
+000037b6	movl	$0x00000124,0x08(%esp,1)
+000037be	movl	%edx,0x04(%esp,1)
+000037c2	leal	0x00001fe0(%ebx),%eax ; "%s:%d:%s: CloseIRDevice: Release failed: 0x%x"
+000037c8	movl	%eax,(%esp,1)
+000037cb	calll	0x0000703c	; symbol stub for: _printf
+000037d0	addl	$0x34,%esp
+000037d3	popl	%ebx
+000037d4	popl	%ebp
+000037d5	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;
+; FindIRHIDDevice() ;
+;;;;;;;;;;;;;;;;;;;;;
+
+000037d6	pushl	%ebp
+000037d7	movl	%esp,%ebp
+000037d9	pushl	%edi
+000037da	pushl	%esi
+000037db	pushl	%ebx
+000037dc	subl	$0x0000009c,%esp
+000037e2	calll	0x00005fec ; bx_thunk
+000037e7	movl	$0x00000000,0xc8(%ebp)
+000037ee	movl	$0x00000000,0xc4(%ebp)
+000037f5	movl	$0x00000000,0xc0(%ebp)
+000037fc	leal	0x00002191(%ebx),%eax ; "IOHIDDevice"
+00003802	movl	%eax,(%esp,1)
+00003805	calll	0x000070b4	; symbol stub for: _IOServiceMatching("IOHIDDevice")
+0000380a	movl	%eax,0xdc(%ebp)
+0000380d	cmpl	$0x00,0xdc(%ebp)
+00003811	jne	0x0000384c
+
+00003813	leal	0x00001d8d(%ebx),%eax
+00003819	movl	%eax,(%esp,1)
+0000381c	calll	0x00007037	; symbol stub for: _basename
+00003821	movl	%eax,%edx
+00003823	leal	0x00002181(%ebx),%eax
+00003829	movl	%eax,0x0c(%esp,1)
+0000382d	movl	$0x00000133,0x08(%esp,1)
+00003835	movl	%edx,0x04(%esp,1)
+00003839	leal	0x0000219d(%ebx),%eax ; "%s:%d:%s: Can't create a HID device matching dictionary"
+0000383f	movl	%eax,(%esp,1)
+00003842	calll	0x0000703c	; symbol stub for: _printf
+00003847	jmpl	0x00003c09
+
+0000384c	leal	0x0000382d(%ebx),%eax ; offset 0x6014
+00003852	movl	(%eax),%eax
+00003854	movl	(%eax),%eax
+00003856	leal	0x000028fd(%ebx),%edx ; offset 0x50ea
+0000385c	movl	%eax,0x08(%esp,1)
+00003860	movl	%edx,0x04(%esp,1)
+00003864	movl	0xdc(%ebp),%eax
+00003867	movl	%eax,(%esp,1)
+0000386a	calll	0x00007069	; symbol stub for: _CFDictionarySetValue
+0000386f	leal	0x00003831(%ebx),%eax ; offset 0x6018
+00003875	movl	(%eax),%eax
+00003877	movl	(%eax),%edx
+00003879	movl	0xdc(%ebp),%eax
+0000387c	movl	%eax,0x04(%esp,1)
+00003880	movl	%edx,(%esp,1)
+00003883	calll	0x00007055	; symbol stub for: _IOServiceGetMatchingService
+00003888	movl	%eax,0xe4(%ebp)
+0000388b	cmpl	$0x00,0xe4(%ebp)
+0000388f	jne	0x000038ca
+
+00003891	leal	0x00001d8d(%ebx),%eax
+00003897	movl	%eax,(%esp,1)
+0000389a	calll	0x00007037	; symbol stub for: _basename
+0000389f	movl	%eax,%edx
+000038a1	leal	0x00002181(%ebx),%eax
+000038a7	movl	%eax,0x0c(%esp,1)
+000038ab	movl	$0x0000013d,0x08(%esp,1)
+000038b3	movl	%edx,0x04(%esp,1)
+000038b7	leal	0x00001fe9(%ebx),%eax ; "%s:%d:%s: Didn't get myDeviceService"
+000038bd	movl	%eax,(%esp,1)
+000038c0	calll	0x0000703c	; symbol stub for: _printf
+000038c5	jmpl	0x00003c09
+
+000038ca	movl	$0x0000006f,0x40(%esp,1)
+000038d2	movl	$0x00000042,0x3c(%esp,1)
+000038da	movl	$0x000000c6,0x38(%esp,1)
+000038e2	movl	$0x000000e4,0x34(%esp,1)
+000038ea	movl	$0x00000050,0x30(%esp,1)
+000038f2	movl	$0x00000000,0x2c(%esp,1)
+000038fa	movl	$0x000000d4,0x28(%esp,1)
+00003902	movl	$0x00000091,0x24(%esp,1)
+0000390a	movl	$0x000000d4,0x20(%esp,1)
+00003912	movl	$0x00000011,0x1c(%esp,1)
+0000391a	movl	$0x0000009c,0x18(%esp,1)
+00003922	movl	$0x00000010,0x14(%esp,1)
+0000392a	movl	$0x00000058,0x10(%esp,1)
+00003932	movl	$0x000000e8,0x0c(%esp,1)
+0000393a	movl	$0x00000044,0x08(%esp,1)
+00003942	movl	$0x000000c2,0x04(%esp,1)
+0000394a	movl	$0x00000000,(%esp,1) ; C244E858-109C-11D4-91D4-0050E4C6426F (kIOCFPlugInInterfaceID)
+00003951	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+00003956	movl	%eax,%esi
+00003958	movl	$0x000000d5,0x40(%esp,1)
+00003960	movl	$0x00000018,0x3c(%esp,1)
+00003968	movl	$0x0000008f,0x38(%esp,1)
+00003970	movl	$0x00000002,0x34(%esp,1)
+00003978	movl	$0x00000005,0x30(%esp,1)
+00003980	movl	$0x00000000,0x2c(%esp,1)
+00003988	movl	$0x0000000c,0x28(%esp,1)
+00003990	movl	$0x000000ba,0x24(%esp,1)
+00003998	movl	$0x000000d4,0x20(%esp,1)
+000039a0	movl	$0x00000011,0x1c(%esp,1)
+000039a8	movl	$0x0000001a,0x18(%esp,1)
+000039b0	movl	$0x0000006f,0x14(%esp,1)
+000039b8	movl	$0x00000038,0x10(%esp,1)
+000039c0	movl	$0x000000fa,0x0c(%esp,1)
+000039c8	movl	$0x00000012,0x08(%esp,1)
+000039d0	movl	$0x000000fa,0x04(%esp,1)
+000039d8	movl	$0x00000000,(%esp,1) ; FA12FA38-6F1A-11D4-BA0C-0005028F18D5 (IOHIDDeviceUserClientTypeID)
+000039df	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+000039e4	movl	%eax,%edx
+000039e6	leal	0xc8(%ebp),%eax
+000039e9	movl	%eax,0x10(%esp,1)
+000039ed	leal	0xc4(%ebp),%eax
+000039f0	movl	%eax,0x0c(%esp,1)
+000039f4	movl	%esi,0x08(%esp,1)
+000039f8	movl	%edx,0x04(%esp,1)
+000039fc	movl	0xe4(%ebp),%eax
+000039ff	movl	%eax,(%esp,1)
+00003a02	calll	0x0000706e	; symbol stub for: _IOCreatePlugInInterfaceForService
+00003a07	movl	%eax,0xe0(%ebp)
+00003a0a	cmpl	$0x00,0xe0(%ebp)
+00003a0e	jne	0x00003a17
+
+00003a10	movl	0xc4(%ebp),%eax
+00003a13	testl	%eax,%eax
+00003a15	jne	0x00003a5e
+
+00003a17	movl	0xc4(%ebp),%esi
+00003a1a	leal	0x00001d8d(%ebx),%eax
+00003a20	movl	%eax,(%esp,1)
+00003a23	calll	0x00007037	; symbol stub for: _basename
+00003a28	movl	%eax,%edx
+00003a2a	movl	%esi,0x14(%esp,1)
+00003a2e	movl	0xe0(%ebp),%eax
+00003a31	movl	%eax,0x10(%esp,1)
+00003a35	leal	0x00002181(%ebx),%eax
+00003a3b	movl	%eax,0x0c(%esp,1)
+00003a3f	movl	$0x00000144,0x08(%esp,1)
+00003a47	movl	%edx,0x04(%esp,1)
+00003a4b	leal	0x00002011(%ebx),%eax ; "%s:%d:%s: unable to create plugin. ret = %08x, ioDev = %p"
+00003a51	movl	%eax,(%esp,1)
+00003a54	calll	0x0000703c	; symbol stub for: _printf
+00003a59	jmpl	0x00003c09
+
+00003a5e	movl	0xc4(%ebp),%eax
+00003a61	movl	(%eax),%eax
+00003a63	movl	0x04(%eax),%esi
+00003a66	leal	0xc0(%ebp),%edi
+00003a69	movl	$0x000000d5,0x40(%esp,1)
+00003a71	movl	$0x00000018,0x3c(%esp,1)
+00003a79	movl	$0x0000008f,0x38(%esp,1)
+00003a81	movl	$0x00000002,0x34(%esp,1)
+00003a89	movl	$0x00000005,0x30(%esp,1)
+00003a91	movl	$0x00000000,0x2c(%esp,1)
+00003a99	movl	$0x00000074,0x28(%esp,1)
+00003aa1	movl	$0x00000094,0x24(%esp,1)
+00003aa9	movl	$0x000000d4,0x20(%esp,1)
+00003ab1	movl	$0x00000011,0x1c(%esp,1)
+00003ab9	movl	$0x00000014,0x18(%esp,1)
+00003ac1	movl	$0x0000006f,0x14(%esp,1)
+00003ac9	movl	$0x0000000c,0x10(%esp,1)
+00003ad1	movl	$0x00000042,0x0c(%esp,1)
+00003ad9	movl	$0x000000bd,0x08(%esp,1)
+00003ae1	movl	$0x00000078,0x04(%esp,1)
+00003ae9	movl	$0x00000000,(%esp,1) ; 78BD420C-6F14-11D4-9474-0005028F18D5 (kIOHIDDeviceInterfaceID)
+00003af0	calll	0x000070a5	; symbol stub for: _CFUUIDGetConstantUUIDWithBytes
+00003af5	leal	0xa8(%ebp),%edx
+00003af8	movl	%eax,0x04(%esp,1)
+00003afc	movl	%edx,(%esp,1)
+00003aff	calll	0x000070aa	; symbol stub for: _CFUUIDGetUUIDBytes
+00003b04	subl	$0x04,%esp
+00003b07	movl	0xa8(%ebp),%eax
+00003b0a	movl	%eax,0xcc(%ebp)
+00003b0d	movl	0xac(%ebp),%eax
+00003b10	movl	%eax,0xd0(%ebp)
+00003b13	movl	0xb0(%ebp),%eax
+00003b16	movl	%eax,0xd4(%ebp)
+00003b19	movl	0xb4(%ebp),%eax
+00003b1c	movl	%eax,0xd8(%ebp)
+00003b1f	movl	0xc4(%ebp),%edx
+00003b22	movl	%edi,0x14(%esp,1)
+00003b26	movl	0xcc(%ebp),%eax
+00003b29	movl	%eax,0x04(%esp,1)
+00003b2d	movl	0xd0(%ebp),%eax
+00003b30	movl	%eax,0x08(%esp,1)
+00003b34	movl	0xd4(%ebp),%eax
+00003b37	movl	%eax,0x0c(%esp,1)
+00003b3b	movl	0xd8(%ebp),%eax
+00003b3e	movl	%eax,0x10(%esp,1)
+00003b42	movl	%edx,(%esp,1)
+00003b45	call	*%esi
+00003b47	movl	%eax,0xe0(%ebp)
+00003b4a	cmpl	$0x00,0xe0(%ebp)
+00003b4e	jne	0x00003b57
+
+00003b50	movl	0xc0(%ebp),%eax
+00003b53	testl	%eax,%eax
+00003b55	jne	0x00003b9b
+
+00003b57	movl	0xc0(%ebp),%esi
+00003b5a	leal	0x00001d8d(%ebx),%eax
+00003b60	movl	%eax,(%esp,1)
+00003b63	calll	0x00007037	; symbol stub for: _basename
+00003b68	movl	%eax,%edx
+00003b6a	movl	%esi,0x14(%esp,1)
+00003b6e	movl	0xe0(%ebp),%eax
+00003b71	movl	%eax,0x10(%esp,1)
+00003b75	leal	0x00002181(%ebx),%eax
+00003b7b	movl	%eax,0x0c(%esp,1)
+00003b7f	movl	$0x0000014c,0x08(%esp,1)
+00003b87	movl	%edx,0x04(%esp,1)
+00003b8b	leal	0x0000204d(%ebx),%eax ; "%s:%d:%s: unable to create a device interface. ret = %08x, dev = %p"
+00003b91	movl	%eax,(%esp,1)
+00003b94	calll	0x0000703c	; symbol stub for: _printf
+00003b99	jmp	0x00003c09
+
+00003b9b	movl	0xc0(%ebp),%eax
+00003b9e	movl	(%eax),%eax
+00003ba0	movl	0x20(%eax),%edx
+00003ba3	movl	0xc0(%ebp),%eax
+00003ba6	movl	$0x00000000,0x04(%esp,1)
+00003bae	movl	%eax,(%esp,1)
+00003bb1	call	*%edx
+00003bb3	movl	%eax,0xe0(%ebp)
+00003bb6	cmpl	$0x00,0xe0(%ebp)
+00003bba	je	0x00003c09
+
+00003bbc	leal	0x00001d8d(%ebx),%eax
+00003bc2	movl	%eax,(%esp,1)
+00003bc5	calll	0x00007037	; symbol stub for: _basename
+00003bca	movl	%eax,%edx
+00003bcc	movl	0xe0(%ebp),%eax
+00003bcf	movl	%eax,0x10(%esp,1)
+00003bd3	leal	0x00002181(%ebx),%eax
+00003bd9	movl	%eax,0x0c(%esp,1)
+00003bdd	movl	$0x00000153,0x08(%esp,1)
+00003be5	movl	%edx,0x04(%esp,1)
+00003be9	leal	0x00002095(%ebx),%eax ; "%s:%d:%s: Error 0x%x opening device for suspend"
+00003bef	movl	%eax,(%esp,1)
+00003bf2	calll	0x0000703c	; symbol stub for: _printf
+00003bf7	movl	0xc0(%ebp),%eax
+00003bfa	movl	%eax,(%esp,1)
+00003bfd	calll	0x0000371c ; CloseIRHIDDevice()
+00003c02	movl	$0x00000000,0xc0(%ebp)
+00003c09	cmpl	$0x00,0xe4(%ebp)
+00003c0d	je	0x00003c1a
+
+00003c0f	movl	0xe4(%ebp),%eax
+00003c12	movl	%eax,(%esp,1)
+00003c15	calll	0x00007073	; symbol stub for: _IOObjectRelease
+00003c1a	movl	0xc4(%ebp),%eax
+00003c1d	testl	%eax,%eax
+00003c1f	je	0x00003c31
+
+00003c21	movl	0xc4(%ebp),%eax
+00003c24	movl	(%eax),%eax
+00003c26	movl	0x0c(%eax),%edx
+00003c29	movl	0xc4(%ebp),%eax
+00003c2c	movl	%eax,(%esp,1)
+00003c2f	call	*%edx
+00003c31	movl	0xc0(%ebp),%eax
+00003c34	leal	0xf4(%ebp),%esp
+00003c37	popl	%ebx
+00003c38	popl	%esi
+00003c39	popl	%edi
+00003c3a	popl	%ebp
+00003c3b	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; IRHIDDeviceReport(data, bufsize, reportType) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00003c3c	pushl	%ebp
+00003c3d	movl	%esp,%ebp
+00003c3f	pushl	%esi
+00003c40	pushl	%ebx
+00003c41	subl	$0x50,%esp
+00003c44	calll	0x00005fec ; bx_thunk
+
+00003c49	movl	$0xffffffff,0xec(%ebp)
+00003c50	cmpl	$0x00,0x0c(%ebp) ; bufsize
+00003c54	jg	0x00003c9d
+
+00003c56	leal	0x0000192b(%ebx),%eax
+00003c5c	movl	%eax,(%esp,1)
+00003c5f	calll	0x00007037	; symbol stub for: _basename
+00003c64	movl	%eax,%edx
+00003c66	movl	0x0c(%ebp),%eax
+00003c69	movl	%eax,0x10(%esp,1)
+00003c6d	leal	0x00001d8b(%ebx),%eax
+00003c73	movl	%eax,0x0c(%esp,1)
+00003c77	movl	$0x00000164,0x08(%esp,1)
+00003c7f	movl	%edx,0x04(%esp,1)
+00003c83	leal	0x00001c77(%ebx),%eax ; "%s:%d:%s: invalid bufSize %d"
+00003c89	movl	%eax,(%esp,1)
+00003c8c	calll	0x0000703c	; symbol stub for: _printf
+00003c91	movl	$0xffffffff,0xe4(%ebp)
+00003c98	jmpl	0x00003d9b
+
+00003c9d	calll	0x000037d6 ; FindIRHIDDevice()
+00003ca2	movl	%eax,0xf0(%ebp)
+00003ca5	cmpl	$0x00,0xf0(%ebp)
+00003ca9	jne	0x00003ceb
+
+00003cab	leal	0x0000192b(%ebx),%eax
+00003cb1	movl	%eax,(%esp,1)
+00003cb4	calll	0x00007037	; symbol stub for: _basename
+00003cb9	movl	%eax,%edx
+00003cbb	leal	0x00001d8b(%ebx),%eax
+00003cc1	movl	%eax,0x0c(%esp,1)
+00003cc5	movl	$0x0000016b,0x08(%esp,1)
+00003ccd	movl	%edx,0x04(%esp,1)
+00003cd1	leal	0x00001c97(%ebx),%eax ; "%s:%d:%s: can't find IR device"
+00003cd7	movl	%eax,(%esp,1)
+00003cda	calll	0x0000703c	; symbol stub for: _printf
+00003cdf	movl	$0xffffffff,0xe4(%ebp)
+00003ce6	jmpl	0x00003d9b
+
+00003ceb	movl	0xf0(%ebp),%eax
+00003cee	movl	(%eax),%eax
+00003cf0	movl	0x48(%eax),%esi
+00003cf3	movl	0x0c(%ebp),%edx ; bufsize
+00003cf6	movl	0x08(%ebp),%eax ; data
+00003cf9	movzbl	(%eax),%eax
+00003cfc	movsbl	%al,%ecx
+00003cff	movl	$0x00000000,0x20(%esp,1)
+00003d07	movl	$0x00000000,0x1c(%esp,1)
+00003d0f	movl	$0x00000000,0x18(%esp,1)
+00003d17	movl	$0x000003e8,0x14(%esp,1)
+00003d1f	movl	%edx,0x10(%esp,1)
+00003d23	movl	0x08(%ebp),%eax
+00003d26	movl	%eax,0x0c(%esp,1)
+00003d2a	movl	%ecx,0x08(%esp,1)
+00003d2e	movl	0x10(%ebp),%eax
+00003d31	movl	%eax,0x04(%esp,1)
+00003d35	movl	0xf0(%ebp),%eax
+00003d38	movl	%eax,(%esp,1)
+00003d3b	call	*%esi ; setReport(self, reportType, data[0] (report ID), data, bufsize, 0x3e8, 0, 0, 0)
+00003d3d	movl	%eax,0xf4(%ebp)
+00003d40	cmpl	$0x00,0xf4(%ebp)
+00003d44	jne	0x00003d4f
+00003d46	movl	$0x00000000,0xec(%ebp)
+00003d4d	jmp	0x00003d8a
+
+00003d4f	leal	0x0000192b(%ebx),%eax
+00003d55	movl	%eax,(%esp,1)
+00003d58	calll	0x00007037	; symbol stub for: _basename
+00003d5d	movl	%eax,%edx
+00003d5f	movl	0xf4(%ebp),%eax
+00003d62	movl	%eax,0x10(%esp,1)
+00003d66	leal	0x00001d8b(%ebx),%eax
+00003d6c	movl	%eax,0x0c(%esp,1)
+00003d70	movl	$0x00000176,0x08(%esp,1)
+00003d78	movl	%edx,0x04(%esp,1)
+00003d7c	leal	0x00001ce3(%ebx),%eax ; "%s:%d:%s: DeviceRequest failed (0x%x)"
+00003d82	movl	%eax,(%esp,1)
+00003d85	calll	0x0000703c	; symbol stub for: _printf
+
+00003d8a	movl	0xf0(%ebp),%eax
+00003d8d	movl	%eax,(%esp,1)
+00003d90	calll	0x0000371c ; CloseIRHIDDevice()
+00003d95	movl	0xec(%ebp),%eax
+00003d98	movl	%eax,0xe4(%ebp)
+00003d9b	movl	0xe4(%ebp),%eax
+00003d9e	addl	$0x50,%esp
+00003da1	popl	%ebx
+00003da2	popl	%esi
+00003da3	popl	%ebp
+00003da4	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; CFTypeRef ???? (key) [something with NVRAM] ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00003da5	pushl	%ebp
+00003da6	movl	%esp,%ebp
+00003da8	subl	$0x28,%esp
+00003dab	calll	0x00002b2c
+00003db0	movl	%eax,0xf0(%ebp)
+00003db3	movl	$0x00000000,0x0c(%esp,1) ; options
+00003dbb	movl	$0x00000000,0x08(%esp,1) ; allocator
+00003dc3	movl	0x08(%ebp),%eax ; key
+00003dc6	movl	%eax,0x04(%esp,1)
+00003dca	movl	0xf0(%ebp),%eax ; entry
+00003dcd	movl	%eax,(%esp,1)
+00003dd0	calll	0x000070d7	; symbol stub for: _IORegistryEntryCreateCFProperty(entry, key, allocator, options)
+00003dd5	movl	%eax,0xf4(%ebp)
+00003dd8	movl	0xf0(%ebp),%eax
+00003ddb	movl	%eax,(%esp,1)
+00003dde	calll	0x00007073	; symbol stub for: _IOObjectRelease
+00003de3	movl	0xf4(%ebp),%eax
+00003de6	leave
+00003de7	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; char GetNVRAMVariableChar(CFStringRef key);
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00003de8	pushl	%ebp
+00003de9	movl	%esp,%ebp
+00003deb	pushl	%esi
+00003dec	pushl	%ebx
+00003ded	subl	$0x40,%esp
+00003df0	calll	0x00005fec ; bx_thunk
+00003df5	movb	$0xff,0xeb(%ebp)
+00003df9	movl	0x08(%ebp),%eax
+00003dfc	movl	%eax,(%esp,1)
+00003dff	calll	0x00003da5 ; get CFTypeRef
+00003e04	movl	%eax,0xec(%ebp)
+00003e07	cmpl	$0x00,0xec(%ebp)
+00003e0b	jne	0x00003e1c
+
+00003e0d	movzbl	0xeb(%ebp),%eax
+00003e11	movsbl	%al,%eax
+00003e14	movl	%eax,0xe4(%ebp)
+00003e17	jmpl	0x00003eee ; .done
+
+00003e1c	movl	0xec(%ebp),%eax
+00003e1f	movl	%eax,(%esp,1)
+00003e22	calll	0x00007064	; symbol stub for: _CFGetTypeID
+00003e27	movl	%eax,0xf0(%ebp)
+00003e2a	calll	0x000070a0	; symbol stub for: _CFBooleanGetTypeID
+00003e2f	cmpl	0xf0(%ebp),%eax
+00003e32	jne	0x00003e55
+
+.is_bool:
+00003e34	movl	0xec(%ebp),%eax
+00003e37	movl	%eax,(%esp,1)
+00003e3a	calll	0x000070d2	; symbol stub for: _CFBooleanGetValue
+00003e3f	testb	%al,%al
+00003e41	je	0x00003e4c
+
+00003e43	movb	$0x01,0xeb(%ebp)
+00003e47	jmpl	0x00003ed9
+
+00003e4c	movb	$0x00,0xeb(%ebp)
+00003e50	jmpl	0x00003ed9
+
+00003e55	calll	0x00007082	; symbol stub for: _CFNumberGetTypeID
+00003e5a	cmpl	0xf0(%ebp),%eax
+00003e5d	jne	0x00003e7b
+
+.is_number:
+00003e5f	movl	0xec(%ebp),%edx
+00003e62	leal	0xeb(%ebp),%eax
+00003e65	movl	%eax,0x08(%esp,1)
+00003e69	movl	$0x00000001,0x04(%esp,1)
+00003e71	movl	%edx,(%esp,1)
+00003e74	calll	0x0000709b	; symbol stub for: _CFNumberGetValue
+00003e79	jmp	0x00003ed9
+
+00003e7b	calll	0x000070c8	; symbol stub for: _CFDataGetTypeID
+00003e80	cmpl	0xf0(%ebp),%eax
+00003e83	jne	0x00003e9e
+
+.is_data:
+00003e85	movl	0xec(%ebp),%eax
+00003e88	movl	%eax,(%esp,1)
+00003e8b	calll	0x000070af	; symbol stub for: _CFDataGetBytePtr
+00003e90	movl	%eax,0xf4(%ebp)
+00003e93	movl	0xf4(%ebp),%eax
+00003e96	movzbl	(%eax),%eax
+00003e99	movb	%al,0xeb(%ebp)
+00003e9c	jmp	0x00003ed9
+
+00003e9e	movl	0xf0(%ebp),%esi
+00003ea1	leal	0x0000177f(%ebx),%eax
+00003ea7	movl	%eax,(%esp,1)
+00003eaa	calll	0x00007037	; symbol stub for: _basename
+00003eaf	movl	%eax,%edx
+00003eb1	movl	%esi,0x10(%esp,1)
+00003eb5	leal	0x00001bf3(%ebx),%eax
+00003ebb	movl	%eax,0x0c(%esp,1)
+00003ebf	movl	$0x0000019f,0x08(%esp,1)
+00003ec7	movl	%edx,0x04(%esp,1)
+00003ecb	leal	0x00001c0b(%ebx),%eax "%s:%d:%s: unknown type id %d"
+00003ed1	movl	%eax,(%esp,1)
+00003ed4	calll	0x0000703c	; symbol stub for: _printf
+
+00003ed9	movl	0xec(%ebp),%eax
+00003edc	movl	%eax,(%esp,1)
+00003edf	calll	0x000070e1	; symbol stub for: _CFRelease
+00003ee4	movzbl	0xeb(%ebp),%eax
+00003ee8	movsbl	%al,%eax
+00003eeb	movl	%eax,0xe4(%ebp)
+
+.done:
+00003eee	movl	0xe4(%ebp),%eax
+00003ef1	addl	$0x40,%esp
+00003ef4	popl	%ebx
+00003ef5	popl	%esi
+00003ef6	popl	%ebp
+00003ef7	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; int SetNVRAMVariableChar(CFStringRef key, char value) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00003ef8	pushl	%ebp
+00003ef9	movl	%esp,%ebp
+00003efb	pushl	%ebx
+00003efc	subl	$0x54,%esp
+00003eff	calll	0x00005fec ; bx_thunk
+00003f04	movl	0x0c(%ebp),%eax
+00003f07	movb	%al,0xd4(%ebp)
+00003f0a	calll	0x00007096	; symbol stub for: _geteuid
+00003f0f	testl	%eax,%eax ; root?
+00003f11	je	0x00003f53 ; .is_root
+
+00003f13	leal	0x00001670(%ebx),%eax
+00003f19	movl	%eax,(%esp,1)
+00003f1c	calll	0x00007037	; symbol stub for: _basename
+00003f21	movl	%eax,%edx
+00003f23	leal	0x00001b1c(%ebx),%eax
+00003f29	movl	%eax,0x0c(%esp,1)
+00003f2d	movl	$0x000001a9,0x08(%esp,1)
+00003f35	movl	%edx,0x04(%esp,1)
+00003f39	leal	0x00001b34(%ebx),%eax ; "%s:%d:%s: must be called as root"
+00003f3f	movl	%eax,(%esp,1)
+00003f42	calll	0x0000703c	; symbol stub for: _printf
+00003f47	movl	$0xffffffff,0xc8(%ebp)
+00003f4e	jmpl	0x000040b8
+
+.is_root:
+00003f53	movl	0x08(%ebp),%eax
+00003f56	movl	%eax,(%esp,1)
+00003f59	calll	0x00003da5 ; get CFTypeRef
+00003f5e	movl	%eax,0xe4(%ebp)
+00003f61	cmpl	$0x00,0xe4(%ebp)
+00003f65	je	0x00003f77
+
+00003f67	movl	0xe4(%ebp),%eax
+00003f6a	movl	%eax,(%esp,1)
+00003f6d	calll	0x00007064	; symbol stub for: _CFGetTypeID
+00003f72	movl	%eax,0xcc(%ebp)
+00003f75	jmp	0x00003f7f
+
+00003f77	calll	0x000070c8	; symbol stub for: _CFDataGetTypeID
+00003f7c	movl	%eax,0xcc(%ebp)
+00003f7f	movl	0xcc(%ebp),%eax
+00003f82	movl	%eax,0xe8(%ebp)
+00003f85	movl	$0x00000000,0xec(%ebp)
+00003f8c	calll	0x000070a0	; symbol stub for: _CFBooleanGetTypeID
+00003f91	cmpl	0xe8(%ebp),%eax
+00003f94	jne	0x00003fc2
+
+00003f96	movzbl	0xd4(%ebp),%eax
+00003f9a	testb	%al,%al
+00003f9c	je	0x00003fad
+
+00003f9e	leal	0x00003110(%ebx),%eax
+00003fa4	movl	(%eax),%eax
+00003fa6	movl	(%eax),%eax
+00003fa8	movl	%eax,0xd0(%ebp)
+00003fab	jmp	0x00003fba
+
+00003fad	leal	0x00003120(%ebx),%eax
+00003fb3	movl	(%eax),%eax
+00003fb5	movl	(%eax),%eax
+00003fb7	movl	%eax,0xd0(%ebp)
+00003fba	movl	0xd0(%ebp),%eax
+00003fbd	movl	%eax,0xec(%ebp)
+00003fc0	jmp	0x00004016
+
+00003fc2	calll	0x00007082	; symbol stub for: _CFNumberGetTypeID
+00003fc7	cmpl	0xe8(%ebp),%eax
+00003fca	jne	0x00003ff2
+
+00003fcc	leal	0x0000311c(%ebx),%eax
+00003fd2	movl	(%eax),%eax
+00003fd4	movl	(%eax),%edx
+00003fd6	leal	0xd4(%ebp),%eax
+00003fd9	movl	%eax,0x08(%esp,1)
+00003fdd	movl	$0x00000001,0x04(%esp,1)
+00003fe5	movl	%edx,(%esp,1)
+00003fe8	calll	0x000070b9	; symbol stub for: _CFNumberCreate
+00003fed	movl	%eax,0xec(%ebp)
+00003ff0	jmp	0x00004016
+
+00003ff2	leal	0xd4(%ebp),%edx
+00003ff5	leal	0x0000311c(%ebx),%eax
+00003ffb	movl	(%eax),%eax
+00003ffd	movl	(%eax),%eax
+00003fff	movl	$0x00000001,0x08(%esp,1)
+00004007	movl	%edx,0x04(%esp,1)
+0000400b	movl	%eax,(%esp,1)
+0000400e	calll	0x00007050	; symbol stub for: _CFDataCreate
+00004013	movl	%eax,0xec(%ebp)
+00004016	calll	0x00002b2c
+0000401b	movl	%eax,0xf0(%ebp)
+0000401e	movl	0xec(%ebp),%eax
+00004021	movl	%eax,0x08(%esp,1)
+00004025	movl	0x08(%ebp),%eax
+00004028	movl	%eax,0x04(%esp,1)
+0000402c	movl	0xf0(%ebp),%eax
+0000402f	movl	%eax,(%esp,1)
+00004032	calll	0x0000708c	; symbol stub for: _IORegistryEntrySetCFProperty
+00004037	movl	%eax,0xf4(%ebp)
+0000403a	movl	0xf0(%ebp),%eax
+0000403d	movl	%eax,(%esp,1)
+00004040	calll	0x00007073	; symbol stub for: _IOObjectRelease
+00004045	cmpl	$0x00,0xe4(%ebp)
+00004049	je	0x00004056
+
+0000404b	movl	0xe4(%ebp),%eax
+0000404e	movl	%eax,(%esp,1)
+00004051	calll	0x000070e1	; symbol stub for: _CFRelease
+00004056	cmpl	$0x00,0xec(%ebp)
+0000405a	je	0x00004067
+
+0000405c	movl	0xec(%ebp),%eax
+0000405f	movl	%eax,(%esp,1)
+00004062	calll	0x000070e1	; symbol stub for: _CFRelease
+00004067	cmpl	$0x00,0xf4(%ebp)
+0000406b	je	0x000040b1
+
+0000406d	leal	0x00001670(%ebx),%eax
+00004073	movl	%eax,(%esp,1)
+00004076	calll	0x00007037	; symbol stub for: _basename
+0000407b	movl	%eax,%edx
+0000407d	movl	0xf4(%ebp),%eax
+00004080	movl	%eax,0x10(%esp,1)
+00004084	leal	0x00001b1c(%ebx),%eax
+0000408a	movl	%eax,0x0c(%esp,1)
+0000408e	movl	$0x000001c4,0x08(%esp,1)
+00004096	movl	%edx,0x04(%esp,1)
+0000409a	leal	0x00001b58(%ebx),%eax ; "%s:%d:%s: IORegistryty failed 0x%08x"
+000040a0	movl	%eax,(%esp,1)
+000040a3	calll	0x0000703c	; symbol stub for: _printf
+000040a8	movl	$0xffffffff,0xc8(%ebp)
+000040af	jmp	0x000040b8
+
+000040b1	movl	$0x00000000,0xc8(%ebp)
+000040b8	movl	0xc8(%ebp),%eax
+000040bb	addl	$0x54,%esp
+000040be	popl	%ebx
+000040bf	popl	%ebp
+000040c0	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; DeleteNVRAMVariable(a) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+000040c1	pushl	%ebp
+000040c2	movl	%esp,%ebp
+000040c4	pushl	%ebx
+000040c5	subl	$0x44,%esp
+000040c8	calll	0x00005fec ; bx_thunk
+000040cd	calll	0x00007096	; symbol stub for: _geteuid
+000040d2	testl	%eax,%eax ; root?
+000040d4	je	0x00004116
+
+000040d6	leal	0x000014a7(%ebx),%eax
+000040dc	movl	%eax,(%esp,1)
+000040df	calll	0x00007037	; symbol stub for: _basename
+000040e4	movl	%eax,%edx
+000040e6	leal	0x000019c7(%ebx),%eax
+000040ec	movl	%eax,0x0c(%esp,1)
+000040f0	movl	$0x000001d1,0x08(%esp,1)
+000040f8	movl	%edx,0x04(%esp,1)
+000040fc	leal	0x0000196b(%ebx),%eax ; "%s:%d:%s: must be called as root"
+00004102	movl	%eax,(%esp,1)
+00004105	calll	0x0000703c	; symbol stub for: _printf
+0000410a	movl	$0xffffffff,0xe4(%ebp)
+00004111	jmpl	0x00004199
+
+.is_root:
+00004116	calll	0x00002b2c
+0000411b	movl	%eax,0xf0(%ebp)
+0000411e	leal	0x00002027(%ebx),%edx
+00004124	movl	0x08(%ebp),%eax
+00004127	movl	%eax,0x08(%esp,1)
+0000412b	movl	%edx,0x04(%esp,1)
+0000412f	movl	0xf0(%ebp),%eax
+00004132	movl	%eax,(%esp,1)
+00004135	calll	0x0000708c	; symbol stub for: _IORegistryEntrySetCFProperty
+0000413a	movl	%eax,0xf4(%ebp)
+0000413d	movl	0xf0(%ebp),%eax
+00004140	movl	%eax,(%esp,1)
+00004143	calll	0x00007073	; symbol stub for: _IOObjectRelease
+00004148	cmpl	$0x00,0xf4(%ebp)
+0000414c	je	0x00004192 ; .success
+
+0000414e	leal	0x000014a7(%ebx),%eax
+00004154	movl	%eax,(%esp,1)
+00004157	calll	0x00007037	; symbol stub for: _basename
+0000415c	movl	%eax,%edx
+0000415e	movl	0xf4(%ebp),%eax
+00004161	movl	%eax,0x10(%esp,1)
+00004165	leal	0x000019c7(%ebx),%eax
+0000416b	movl	%eax,0x0c(%esp,1)
+0000416f	movl	$0x000001da,0x08(%esp,1)
+00004177	movl	%edx,0x04(%esp,1)
+0000417b	leal	0x0000198f(%ebx),%eax ; "%s:%d:%s: IORegistryEntrySetCFProperty failed 0x%08x"
+00004181	movl	%eax,(%esp,1)
+00004184	calll	0x0000703c	; symbol stub for: _printf
+00004189	movl	$0xffffffff,0xe4(%ebp)
+00004190	jmp	0x00004199
+
+.success:
+00004192	movl	$0x00000000,0xe4(%ebp)
+
+.done:
+00004199	movl	0xe4(%ebp),%eax
+0000419c	addl	$0x44,%esp
+0000419f	popl	%ebx
+000041a0	popl	%ebp
+000041a1	ret
+
+
+;;;;;;
+; ???? unused?
+;;;;;;
+
+000041a2	pushl	%ebp
+000041a3	movl	%esp,%ebp
+000041a5	subl	$0x18,%esp
+000041a8	movl	0x08(%ebp),%eax
+000041ab	movl	%eax,(%esp,1)
+000041ae	calll	0x000040c1 ; DeleteNVRAMVariable()
+000041b3	leave
+000041b4	ret
+
+
+;;;;;;;;;;;;;;;;;
+; OSPGetState() ;
+;;;;;;;;;;;;;;;;;
+
+000041b5	pushl	%ebp
+000041b6	movl	%esp,%ebp
+000041b8	pushl	%ebx
+000041b9	subl	$0x54,%esp
+000041bc	calll	0x00005fec ; bx_thunk
+000041c1	cmpl	$0x04,0x08(%ebp)
+000041c5	jal	0x0000441c
+000041cb	movl	0x08(%ebp),%eax
+000041ce	leal	0x00000000(,%eax,4),%edx
+000041d5	leal	0x00000023(%ebx),%eax
+000041db	movl	(%edx,%eax,1),%eax
+000041de	addl	%ebx,%eax
+000041e0	jmp	*%eax
+000041e2	nop
+000041e3	nop
+000041e4	aaa
+000041e5	addb	%al,(%eax)
+000041e7	addb	%bh,0x38000000(%esi)
+000041ed	addl	%eax,(%eax)
+000041ef	addb	%ch,(%edi)
+000041f1	addb	(%eax),%al
+000041f3	addb	%al,0x02(%ebp)
+000041f6	addb	%al,(%eax)
+000041f8	movl	$0x00000001,(%esp,1)
+000041ff	calll	0x000041b5 ; OSPGetState()
+00004204	cmpl	$0x01,%eax
+00004207	jne	0x00004215
+00004209	movl	$0x00000001,0xd4(%ebp)
+00004210	jmpl	0x0000445e
+00004215	movl	$0x00000002,(%esp,1)
+0000421c	calll	0x000041b5 ; OSPGetState()
+00004221	movl	%eax,0xe0(%ebp)
+00004224	movl	$0x00000003,(%esp,1)
+0000422b	calll	0x000041b5 ; OSPGetState()
+00004230	movl	%eax,0xe4(%ebp)
+00004233	cmpl	$0x00,0xe4(%ebp)
+00004237	jle	0x0000424d
+00004239	movl	0xe0(%ebp),%eax
+0000423c	cmpl	0xe4(%ebp),%eax
+0000423f	jle	0x0000424d
+00004241	movl	$0x00000002,0xd4(%ebp)
+00004248	jmpl	0x0000445e
+0000424d	movl	$0x00000004,(%esp,1)
+00004254	calll	0x000041b5 ; OSPGetState()
+00004259	movl	%eax,0xe8(%ebp)
+0000425c	cmpl	$0x00,0xe8(%ebp)
+00004260	jle	0x00004273
+00004262	cmpl	$0x04,0xe8(%ebp)
+00004266	jg	0x00004273
+00004268	movl	0xe8(%ebp),%eax
+0000426b	movl	%eax,0xd4(%ebp)
+0000426e	jmpl	0x0000445e
+00004273	movl	$0xffffffff,0xd4(%ebp)
+0000427a	jmpl	0x0000445e
+0000427f	movl	$0xffffffff,0xec(%ebp)
+00004286	movb	$0x00,0xde(%ebp)
+0000428a	movb	$0xee,0xdf(%ebp)
+0000428e	movl	$0x00000000,0x08(%esp,1)
+00004296	movl	$0x00000002,0x04(%esp,1)
+0000429e	leal	0xde(%ebp),%eax
+000042a1	movl	%eax,(%esp,1)
+000042a4	calll	0x00003510 ; IRDeviceReport()
+000042a9	cmpl	$0xff,%eax
+000042ac	jne	0x000042e4
+
+000042ae	leal	0x000013b3(%ebx),%eax
+000042b4	movl	%eax,(%esp,1)
+000042b7	calll	0x00007037	; symbol stub for: _basename
+000042bc	movl	%eax,%edx
+000042be	leal	0x000018ff(%ebx),%eax
+000042c4	movl	%eax,0x0c(%esp,1)
+000042c8	movl	$0x00000205,0x08(%esp,1)
+000042d0	movl	%edx,0x04(%esp,1)
+000042d4	leal	0x0000190b(%ebx),%eax ; "%s:%d:%s: kOSPRemote: IRDeviceReport failed"
+000042da	movl	%eax,(%esp,1)
+000042dd	calll	0x0000703c	; symbol stub for: _printf
+000042e2	jmp	0x000042ee
+
+000042e4	movzbl	0xdf(%ebp),%eax
+000042e8	movsbl	%al,%eax
+000042eb	movl	%eax,0xec(%ebp)
+000042ee	movl	0xec(%ebp),%eax
+000042f1	movl	%eax,0xd4(%ebp)
+000042f4	jmpl	0x0000445e
+000042f9	movb	$0xff,0xdd(%ebp)
+000042fd	calll	0x00002df4 ; FindAppleRTC()
+00004302	movl	%eax,0xf0(%ebp)
+00004305	cmpl	$0x00,0xf0(%ebp)
+00004309	jne	0x0000434e
+
+0000430b	leal	0x000013b3(%ebx),%eax
+00004311	movl	%eax,(%esp,1)
+00004314	calll	0x00007037	; symbol stub for: _basename
+00004319	movl	%eax,%edx
+0000431b	leal	0x000018ff(%ebx),%eax
+00004321	movl	%eax,0x0c(%esp,1)
+00004325	movl	$0x00000213,0x08(%esp,1)
+0000432d	movl	%edx,0x04(%esp,1)
+00004331	leal	0x0000193b(%ebx),%eax ; "%s:%d:%s: kOSPBootCount: can't find RTC device"
+00004337	movl	%eax,(%esp,1)
+0000433a	calll	0x0000703c	; symbol stub for: _printf
+0000433f	movzbl	0xdd(%ebp),%eax
+00004343	movsbl	%al,%eax
+00004346	movl	%eax,0xd4(%ebp)
+00004349	jmpl	0x0000445e
+
+0000434e	movl	$0x00000001,0xd8(%ebp)
+00004355	leal	0xdd(%ebp),%eax
+00004358	movl	%eax,0x14(%esp,1)
+0000435c	movl	$0x000000af,0x10(%esp,1)
+00004364	leal	0xd8(%ebp),%eax
+00004367	movl	%eax,0x0c(%esp,1)
+0000436b	movl	$0x00000001,0x08(%esp,1)
+00004373	movl	$0x00000000,0x04(%esp,1)
+0000437b	movl	0xf0(%ebp),%eax
+0000437e	movl	%eax,(%esp,1)
+00004381	calll	0x00007078	; symbol stub for: _IOConnectMethodScalarIStructureO
+00004386	movl	%eax,0xf4(%ebp)
+00004389	cmpl	$0x00,0xf4(%ebp)
+0000438d	jne	0x0000439a
+
+0000438f	movzbl	0xdd(%ebp),%eax
+00004393	andb	$0x0f,%al
+00004395	movb	%al,0xdd(%ebp)
+00004398	jmp	0x000043d9
+0000439a	leal	0x000013b3(%ebx),%eax
+
+000043a0	movl	%eax,(%esp,1)
+000043a3	calll	0x00007037	; symbol stub for: _basename
+000043a8	movl	%eax,%edx
+000043aa	movl	0xf4(%ebp),%eax
+000043ad	movl	%eax,0x10(%esp,1)
+000043b1	leal	0x000018ff(%ebx),%eax
+000043b7	movl	%eax,0x0c(%esp,1)
+000043bb	movl	$0x00000223,0x08(%esp,1)
+000043c3	movl	%edx,0x04(%esp,1)
+000043c7	leal	0x0000196b(%ebx),%eax ; "%s:%d:%s: kOSPBootCount: kRTCMethodReadBytes failed: 0x%x"
+000043cd	movl	%eax,(%esp,1)
+000043d0	calll	0x0000703c	; symbol stub for: _printf
+000043d5	movb	$0xff,0xdd(%ebp)
+
+000043d9	movl	0xf0(%ebp),%eax
+000043dc	movl	%eax,(%esp,1)
+000043df	calll	0x00007073	; symbol stub for: _IOObjectRelease
+000043e4	movzbl	0xdd(%ebp),%eax
+000043e8	movsbl	%al,%eax
+000043eb	movl	%eax,0xd4(%ebp)
+000043ee	jmp	0x0000445e
+
+000043f0	leal	0x00001f43(%ebx),%eax
+000043f6	movl	%eax,(%esp,1)
+000043f9	calll	0x00003de8 ; GetNVRAMVariableChar()
+000043fe	movsbl	%al,%eax
+00004401	movl	%eax,0xd4(%ebp)
+00004404	jmp	0x0000445e
+00004406	leal	0x00001f53(%ebx),%eax
+0000440c	movl	%eax,(%esp,1)
+0000440f	calll	0x00003de8 ; GetNVRAMVariableChar()
+00004414	movsbl	%al,%eax
+00004417	movl	%eax,0xd4(%ebp)
+0000441a	jmp	0x0000445e
+
+0000441c	leal	0x000013b3(%ebx),%eax
+00004422	movl	%eax,(%esp,1)
+00004425	calll	0x00007037	; symbol stub for: _basename
+0000442a	movl	%eax,%edx
+0000442c	movl	0x08(%ebp),%eax
+0000442f	movl	%eax,0x10(%esp,1)
+00004433	leal	0x000018ff(%ebx),%eax
+00004439	movl	%eax,0x0c(%esp,1)
+0000443d	movl	$0x00000233,0x08(%esp,1)
+00004445	movl	%edx,0x04(%esp,1)
+00004449	leal	0x000019cb(%ebx),%eax ; "%s:%d:%s: unknown state %d"
+0000444f	movl	%eax,(%esp,1)
+00004452	calll	0x0000703c	; symbol stub for: _printf
+00004457	movl	$0xffffffff,0xd4(%ebp)
+
+0000445e	movl	0xd4(%ebp),%eax
+00004461	addl	$0x54,%esp
+00004464	popl	%ebx
+00004465	popl	%ebp
+00004466	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; int OPSSetState(mode, state) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00004467	pushl	%ebp
+00004468	movl	%esp,%ebp
+0000446a	pushl	%ebx
+0000446b	subl	$0x44,%esp
+0000446e	calll	0x00005fec ; bx_thunk
+00004473	cmpl	$0x04,0x08(%ebp) ; verify mode (0..4)
+00004477	jal	0x000047ad
+
+0000447d	movl	0x08(%ebp),%eax ; switch(mode) {
+00004480	leal	0x00000000(,%eax,4),%edx
+00004487	leal	0x00000021(%ebx),%eax
+0000448d	movl	(%edx,%eax,1),%eax
+00004490	addl	%ebx,%eax
+00004492	jmp	*%eax
+00004494	xorl	$0x75000000,%eax
+00004499	addb	%al,(%eax)
+0000449b	addb	%cl,%bh
+0000449d	addb	%al,(%eax)
+0000449f	addb	%bl,0x02(%edx)
+000044a2	addb	%al,(%eax)
+000044a4	int	$0x02
+000044a6	addb	%al,(%eax)
+000044a8	leal	0x00001101(%ebx),%eax
+000044ae	movl	%eax,(%esp,1)
+000044b1	calll	0x00007037	; symbol stub for: _basename
+000044b6	movl	%eax,%edx
+000044b8	leal	0x00001735(%ebx),%eax
+000044be	movl	%eax,0x0c(%esp,1)
+000044c2	movl	$0x0000023f,0x08(%esp,1)
+000044ca	movl	%edx,0x04(%esp,1)
+000044ce	leal	0x00001741(%ebx),%eax ; "%s:%d:%s: kOSPResetReason: unsettable state"
+000044d4	movl	%eax,(%esp,1)
+000044d7	calll	0x0000703c	; symbol stub for: _printf
+000044dc	movl	$0xffffffff,0xe4(%ebp)
+000044e3	jmpl	0x000047ef ; .done
+
+.kospremote:
+000044e8	cmpl	$0x00,0x0c(%ebp) ; state
+000044ec	jne	0x00004502
+
+000044ee	movl	$0x00000001,(%esp,1)
+000044f5	calll	0x000047f8 ; OSPClearState(1)
+000044fa	movl	%eax,0xe4(%ebp)
+000044fd	jmpl	0x000047ef ; .done
+
+00004502	leal	0x00001101(%ebx),%eax
+00004508	movl	%eax,(%esp,1)
+0000450b	calll	0x00007037	; symbol stub for: _basename
+00004510	movl	%eax,%edx
+00004512	leal	0x00001735(%ebx),%eax
+00004518	movl	%eax,0x0c(%esp,1)
+0000451c	movl	$0x00000246,0x08(%esp,1)
+00004524	movl	%edx,0x04(%esp,1)
+00004528	leal	0x00001771(%ebx),%eax ; "%s:%d:%s: kOSPRemote: unsettable state"
+0000452e	movl	%eax,(%esp,1)
+00004531	calll	0x0000703c	; symbol stub for: _printf
+00004536	movl	$0xffffffff,0xe4(%ebp)
+0000453d	jmpl	0x000047ef ; .done
+
+.kospbootcount:
+00004542	movb	$0xff,0xef(%ebp)
+00004546	movb	$0x00,0xee(%ebp)
+0000454a	calll	0x00002df4 ; FindAppleRTC()
+0000454f	movl	%eax,0xf0(%ebp)
+00004552	cmpl	$0x00,0xf0(%ebp)
+00004556	jne	0x00004598
+
+00004558	leal	0x00001101(%ebx),%eax
+0000455e	movl	%eax,(%esp,1)
+00004561	calll	0x00007037	; symbol stub for: _basename
+00004566	movl	%eax,%edx
+00004568	leal	0x00001735(%ebx),%eax
+0000456e	movl	%eax,0x0c(%esp,1)
+00004572	movl	$0x00000250,0x08(%esp,1)
+0000457a	movl	%edx,0x04(%esp,1)
+0000457e	leal	0x00001689(%ebx),%eax ; "%s:%d:%s: kOSPBootCount: can't find RTC device"
+00004584	movl	%eax,(%esp,1)
+00004587	calll	0x0000703c	; symbol stub for: _printf
+0000458c	movsbl	0xef(%ebp),%eax
+00004590	movl	%eax,0xe4(%ebp)
+00004593	jmpl	0x000047ef ; .done
+
+00004598	movl	$0x00000001,0xe8(%ebp)
+0000459f	leal	0xee(%ebp),%eax
+000045a2	movl	%eax,0x14(%esp,1)
+000045a6	movl	$0x000000af,0x10(%esp,1)
+000045ae	leal	0xe8(%ebp),%eax
+000045b1	movl	%eax,0x0c(%esp,1)
+000045b5	movl	$0x00000001,0x08(%esp,1)
+000045bd	movl	$0x00000000,0x04(%esp,1)
+000045c5	movl	0xf0(%ebp),%eax
+000045c8	movl	%eax,(%esp,1)
+000045cb	calll	0x00007078	; symbol stub for: _IOConnectMethodScalarIStructureO
+000045d0	movl	%eax,0xf4(%ebp)
+000045d3	cmpl	$0x00,0xf4(%ebp)
+000045d7	jnel	0x00004677
+
+000045dd	movzbl	0xee(%ebp),%edx
+000045e1	movl	$0xfffffff0,%eax
+000045e6	andb	%al,%dl
+000045e8	movl	0x0c(%ebp),%eax
+000045eb	andb	$0x0f,%al
+000045ed	orb	%dl,%al
+000045ef	movb	%al,0xee(%ebp)
+000045f2	leal	0xee(%ebp),%eax
+000045f5	movl	%eax,0x14(%esp,1)
+000045f9	movl	$0x000000af,0x10(%esp,1)
+00004601	movl	$0x00000001,0x0c(%esp,1)
+00004609	movl	$0x00000001,0x08(%esp,1)
+00004611	movl	$0x00000001,0x04(%esp,1)
+00004619	movl	0xf0(%ebp),%eax
+0000461c	movl	%eax,(%esp,1)
+0000461f	calll	0x0000707d	; symbol stub for: _IOConnectMethodScalarIStructureI
+00004624	movl	%eax,0xf4(%ebp)
+00004627	cmpl	$0x00,0xf4(%ebp)
+0000462b	jne	0x00004636
+
+0000462d	movb	$0x00,0xef(%ebp)
+00004631	jmpl	0x000046b6
+
+00004636	leal	0x00001101(%ebx),%eax
+0000463c	movl	%eax,(%esp,1)
+0000463f	calll	0x00007037	; symbol stub for: _basename
+00004644	movl	%eax,%edx
+00004646	movl	0xf4(%ebp),%eax
+00004649	movl	%eax,0x10(%esp,1)
+0000464d	leal	0x00001735(%ebx),%eax
+00004653	movl	%eax,0x0c(%esp,1)
+00004657	movl	$0x00000267,0x08(%esp,1)
+0000465f	movl	%edx,0x04(%esp,1)
+00004663	leal	0x00001799(%ebx),%eax ; "%s:%d:%s: kOSPBootCount: kRTCMethodWriteBytes failed: 0x%x"
+00004669	movl	%eax,(%esp,1)
+0000466c	calll	0x0000703c	; symbol stub for: _printf
+00004671	movb	$0xff,0xef(%ebp)
+00004675	jmp	0x000046b6
+
+00004677	leal	0x00001101(%ebx),%eax
+0000467d	movl	%eax,(%esp,1)
+00004680	calll	0x00007037	; symbol stub for: _basename
+00004685	movl	%eax,%edx
+00004687	movl	0xf4(%ebp),%eax
+0000468a	movl	%eax,0x10(%esp,1)
+0000468e	leal	0x00001735(%ebx),%eax
+00004694	movl	%eax,0x0c(%esp,1)
+00004698	movl	$0x0000026d,0x08(%esp,1)
+000046a0	movl	%edx,0x04(%esp,1)
+000046a4	leal	0x000016b9(%ebx),%eax ; "%s:%d:%s: kOSPBootCount: kRTCMethodReadBytes failed: 0x%x"
+000046aa	movl	%eax,(%esp,1)
+000046ad	calll	0x0000703c	; symbol stub for: _printf
+000046b2	movb	$0xff,0xef(%ebp)
+
+000046b6	movl	0xf0(%ebp),%eax
+000046b9	movl	%eax,(%esp,1)
+000046bc	calll	0x00007073	; symbol stub for: _IOObjectRelease
+000046c1	movsbl	0xef(%ebp),%eax
+000046c5	movl	%eax,0xe4(%ebp)
+000046c8	jmpl	0x000047ef ; .done
+
+.kospnvrammaxbootattempts:
+000046cd	cmpl	$0x00,0x0c(%ebp) ; check state (0..15)
+000046d1	js	0x000046d9
+000046d3	cmpl	$0x0f,0x0c(%ebp)
+000046d7	jle	0x00004720
+
+000046d9	leal	0x00001101(%ebx),%eax
+000046df	movl	%eax,(%esp,1)
+000046e2	calll	0x00007037	; symbol stub for: _basename
+000046e7	movl	%eax,%edx
+000046e9	movl	0x0c(%ebp),%eax
+000046ec	movl	%eax,0x10(%esp,1)
+000046f0	leal	0x00001735(%ebx),%eax
+000046f6	movl	%eax,0x0c(%esp,1)
+000046fa	movl	$0x00000277,0x08(%esp,1)
+00004702	movl	%edx,0x04(%esp,1)
+00004706	leal	0x000017d5(%ebx),%eax ; "%s:%d:%s: kOSPNVRAMMaxBootAttempts: value %d out of range"
+0000470c	movl	%eax,(%esp,1)
+0000470f	calll	0x0000703c	; symbol stub for: _printf
+00004714	movl	$0xffffffff,0xe4(%ebp)
+0000471b	jmpl	0x000047ef ; .done
+
+00004720	movl	0x0c(%ebp),%eax
+00004723	movsbl	%al,%eax
+00004726	leal	0x00001c91(%ebx),%edx ; offset 0x5104
+0000472c	movl	%eax,0x04(%esp,1) ; state
+00004730	movl	%edx,(%esp,1)
+00004733	calll	0x00003ef8 ; SetNVRAMVariableChar()
+00004738	movl	%eax,0xe4(%ebp)
+0000473b	jmpl	0x000047ef ; .done
+
+.kospnvramresetreason:
+00004740	cmpl	$0x00,0x0c(%ebp) ; check state (1..4)
+00004744	jle	0x0000474c
+00004746	cmpl	$0x04,0x0c(%ebp)
+0000474a	jle	0x00004790
+
+0000474c	leal	0x00001101(%ebx),%eax
+00004752	movl	%eax,(%esp,1)
+00004755	calll	0x00007037	; symbol stub for: _basename
+0000475a	movl	%eax,%edx
+0000475c	movl	0x0c(%ebp),%eax
+0000475f	movl	%eax,0x10(%esp,1)
+00004763	leal	0x00001735(%ebx),%eax
+00004769	movl	%eax,0x0c(%esp,1)
+0000476d	movl	$0x00000280,0x08(%esp,1)
+00004775	movl	%edx,0x04(%esp,1)
+00004779	leal	0x00001811(%ebx),%eax ; "%s:%d:%s: kOSPNVRAMResetReason: value %d out of range"
+0000477f	movl	%eax,(%esp,1)
+00004782	calll	0x0000703c	; symbol stub for: _printf
+00004787	movl	$0xffffffff,0xe4(%ebp)
+0000478e	jmp	0x000047ef ; .done
+
+00004790	movl	0x0c(%ebp),%eax
+00004793	movsbl	%al,%eax
+00004796	leal	0x00001ca1(%ebx),%edx ; offset 0x5114
+0000479c	movl	%eax,0x04(%esp,1) ; state
+000047a0	movl	%edx,(%esp,1)
+000047a3	calll	0x00003ef8 ; SetNVRAMVariableChar()
+000047a8	movl	%eax,0xe4(%ebp)
+000047ab	jmp	0x000047ef ; .done
+
+.invalid:
+000047ad	leal	0x00001101(%ebx),%eax
+000047b3	movl	%eax,(%esp,1)
+000047b6	calll	0x00007037	; symbol stub for: _basename
+000047bb	movl	%eax,%edx
+000047bd	movl	0x08(%ebp),%eax
+000047c0	movl	%eax,0x10(%esp,1)
+000047c4	leal	0x00001735(%ebx),%eax
+000047ca	movl	%eax,0x0c(%esp,1)
+000047ce	movl	$0x00000287,0x08(%esp,1)
+000047d6	movl	%edx,0x04(%esp,1)
+000047da	leal	0x00001719(%ebx),%eax ; "%s:%d:%s: unknown state %d"
+000047e0	movl	%eax,(%esp,1)
+000047e3	calll	0x0000703c	; symbol stub for: _printf
+000047e8	movl	$0xffffffff,0xe4(%ebp)
+
+.done:
+000047ef	movl	0xe4(%ebp),%eax
+000047f2	addl	$0x44,%esp
+000047f5	popl	%ebx
+000047f6	popl	%ebp
+000047f7	ret
+
+
+;;;;;;;;;;;;;;;;;;;
+; OSPClearState() ;
+;;;;;;;;;;;;;;;;;;;
+
+000047f8	pushl	%ebp
+000047f9	movl	%esp,%ebp
+000047fb	pushl	%ebx
+000047fc	subl	$0x44,%esp
+000047ff	calll	0x00005fec ; bx_thunk
+00004804	cmpl	$0x04,0x08(%ebp)
+00004808	jal	0x000049e5 ; .unknown_state
+0000480e	movl	0x08(%ebp),%eax
+00004811	leal	0x00000000(,%eax,4),%edx
+00004818	leal	0x00000024(%ebx),%eax
+0000481e	movl	(%edx,%eax,1),%eax
+00004821	addl	%ebx,%eax
+00004823	jmp	*%eax
+00004825	nop
+00004826	nop
+00004827	nop
+00004828	cmpb	%al,(%eax)
+0000482a	addb	%al,(%eax)
+0000482c	subl	(%ecx),%eax
+0000482e	addb	%al,(%eax)
+00004830	movb	%al,0xbb000001
+00004835	addl	%eax,(%eax)
+00004837	addb	%cl,%dh
+00004839	addl	%eax,(%eax)
+0000483b	addb	%al,%bh
+0000483d	incl	%ebp
+0000483e	lock/addb	%al,(%eax)
+00004841	addb	%al,(%eax)
+00004843	movl	$0x00000001,(%esp,1)
+0000484a	calll	0x000047f8 ; OSPClearState
+0000484f	testl	%eax,%eax
+00004851	je	0x0000488e
+
+00004853	leal	0x00000d70(%ebx),%eax
+00004859	movl	%eax,(%esp,1)
+0000485c	calll	0x00007037	; symbol stub for: _basename
+00004861	movl	%eax,%edx
+00004863	leal	0x000014b8(%ebx),%eax
+00004869	movl	%eax,0x0c(%esp,1)
+0000486d	movl	$0x00000296,0x08(%esp,1)
+00004875	movl	%edx,0x04(%esp,1)
+00004879	leal	0x000014c8(%ebx),%eax ; "%s:%d:%s: kOSPResetReason: OSPClearState(kOSPRemote) failed"
+0000487f	movl	%eax,(%esp,1)
+00004882	calll	0x0000703c	; symbol stub for: _printf
+00004887	movl	$0xffffffff,0xf0(%ebp)
+
+0000488e	movl	$0x00000002,(%esp,1)
+00004895	calll	0x000047f8 ; OSPClearState
+0000489a	testl	%eax,%eax
+0000489c	je	0x000048d9
+
+0000489e	leal	0x00000d70(%ebx),%eax
+000048a4	movl	%eax,(%esp,1)
+000048a7	calll	0x00007037	; symbol stub for: _basename
+000048ac	movl	%eax,%edx
+000048ae	leal	0x000014b8(%ebx),%eax
+000048b4	movl	%eax,0x0c(%esp,1)
+000048b8	movl	$0x0000029b,0x08(%esp,1)
+000048c0	movl	%edx,0x04(%esp,1)
+000048c4	leal	0x00001508(%ebx),%eax ; "%s:%d:%s: kOSPResetReason: OSPClearState(kOSPBootCount) failed"
+000048ca	movl	%eax,(%esp,1)
+000048cd	calll	0x0000703c	; symbol stub for: _printf
+000048d2	movl	$0xffffffff,0xf0(%ebp)
+
+000048d9	movl	$0x00000004,(%esp,1)
+000048e0	calll	0x000047f8 ; OSPClearState
+000048e5	testl	%eax,%eax
+000048e7	je	0x00004924
+
+000048e9	leal	0x00000d70(%ebx),%eax
+000048ef	movl	%eax,(%esp,1)
+000048f2	calll	0x00007037	; symbol stub for: _basename
+000048f7	movl	%eax,%edx
+000048f9	leal	0x000014b8(%ebx),%eax
+000048ff	movl	%eax,0x0c(%esp,1)
+00004903	movl	$0x000002a1,0x08(%esp,1)
+0000490b	movl	%edx,0x04(%esp,1)
+0000490f	leal	0x00001548(%ebx),%eax ; "%s:%d:%s: kOSPResetReason: OSPClearState(kOSPNVRAMResetReason) failed"
+00004915	movl	%eax,(%esp,1)
+00004918	calll	0x0000703c	; symbol stub for: _printf
+0000491d	movl	$0xffffffff,0xf0(%ebp)
+
+00004924	movl	0xf0(%ebp),%eax
+00004927	movl	%eax,0xe4(%ebp)
+0000492a	jmpl	0x00004a27
+
+0000492f	movl	$0xffffffff,0xf4(%ebp)
+00004936	movb	$0x0e,0xee(%ebp)
+0000493a	movb	$0xee,0xef(%ebp)
+0000493e	movl	$0x00000000,0x08(%esp,1)
+00004946	movl	$0x00000002,0x04(%esp,1)
+0000494e	leal	0xee(%ebp),%eax
+00004951	movl	%eax,(%esp,1)
+00004954	calll	0x00003510 ; IRDeviceReport()
+00004959	cmpl	$0xff,%eax
+0000495c	jne	0x00004994
+
+0000495e	leal	0x00000d70(%ebx),%eax
+00004964	movl	%eax,(%esp,1)
+00004967	calll	0x00007037	; symbol stub for: _basename
+0000496c	movl	%eax,%edx
+0000496e	leal	0x000014b8(%ebx),%eax
+00004974	movl	%eax,0x0c(%esp,1)
+00004978	movl	$0x000002ac,0x08(%esp,1)
+00004980	movl	%edx,0x04(%esp,1)
+00004984	leal	0x000012c8(%ebx),%eax ; "%s:%d:%s: kOSPRemote: IRDeviceReport failed"
+0000498a	movl	%eax,(%esp,1)
+0000498d	calll	0x0000703c	; symbol stub for: _printf
+00004992	jmp	0x0000499b
+
+00004994	movl	$0x00000000,0xf4(%ebp)
+
+0000499b	movl	0xf4(%ebp),%eax
+0000499e	movl	%eax,0xe4(%ebp)
+000049a1	jmpl	0x00004a27
+000049a6	movl	$0x00000000,0x04(%esp,1)
+000049ae	movl	$0x00000002,(%esp,1)
+000049b5	calll	0x00004467 ; OSPSetState()
+000049ba	movl	%eax,0xe4(%ebp)
+000049bd	jmp	0x00004a27
+
+000049bf	leal	0x00001900(%ebx),%eax
+000049c5	movl	%eax,(%esp,1)
+000049c8	calll	0x000040c1 ; DeleteNVRAMVariable()
+000049cd	movl	%eax,0xe4(%ebp)
+000049d0	jmp	0x00004a27
+
+000049d2	leal	0x00001910(%ebx),%eax
+000049d8	movl	%eax,(%esp,1)
+000049db	calll	0x000040c1 ; DeleteNVRAMVariable()
+000049e0	movl	%eax,0xe4(%ebp)
+000049e3	jmp	0x00004a27
+
+.unknown_state:
+000049e5	leal	0x00000d70(%ebx),%eax
+000049eb	movl	%eax,(%esp,1)
+000049ee	calll	0x00007037	; symbol stub for: _basename
+000049f3	movl	%eax,%edx
+000049f5	movl	0x08(%ebp),%eax
+000049f8	movl	%eax,0x10(%esp,1)
+000049fc	leal	0x000014b8(%ebx),%eax
+00004a02	movl	%eax,0x0c(%esp,1)
+00004a06	movl	$0x000002c2,0x08(%esp,1)
+00004a0e	movl	%edx,0x04(%esp,1)
+00004a12	leal	0x00001388(%ebx),%eax ; "%s:%d:%s: unknown state %d"
+00004a18	movl	%eax,(%esp,1)
+00004a1b	calll	0x0000703c	; symbol stub for: _printf
+00004a20	movl	$0xffffffff,0xe4(%ebp)
+
+00004a27	movl	0xe4(%ebp),%eax
+00004a2a	addl	$0x44,%esp
+00004a2d	popl	%ebx
+00004a2e	popl	%ebp
+00004a2f	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; int OSPClearNVRAM(void) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00004a30	pushl	%ebp
+00004a31	movl	%esp,%ebp
+00004a33	pushl	%ebx
+00004a34	subl	$0x34,%esp
+00004a37	calll	0x00005fec ; bx_thunk
+
+00004a3c	movl	$0x00000000,0xf0(%ebp)
+00004a43	movl	$0x00000000,0xf4(%ebp)
+00004a4a	calll	0x00007096	; symbol stub for: _geteuid
+00004a4f	testl	%eax,%eax ; root?
+00004a51	je	0x00004a90 ; .is_root
+
+00004a53	leal	0x00000b38(%ebx),%eax
+00004a59	movl	%eax,(%esp,1)
+00004a5c	calll	0x00007037	; symbol stub for: _basename
+00004a61	movl	%eax,%edx
+00004a63	leal	0x00001358(%ebx),%eax
+00004a69	movl	%eax,0x0c(%esp,1)
+00004a6d	movl	$0x000002cf,0x08(%esp,1)
+00004a75	movl	%edx,0x04(%esp,1)
+00004a79	leal	0x00000ffc(%ebx),%eax ; "%s:%d:%s: must be called as root"
+00004a7f	movl	%eax,(%esp,1)
+00004a82	calll	0x0000703c	; symbol stub for: _printf
+00004a87	movl	$0xffffffff,0xe4(%ebp)
+00004a8e	jmp	0x00004aa5
+
+.is_root:
+00004a90	leal	0x00001368(%ebx),%eax ; "nvram ResetNVRam=true"
+00004a96	movl	%eax,(%esp,1)
+00004a99	calll	0x000070cd	; symbol stub for: _system
+00004a9e	movl	$0x00000000,0xe4(%ebp)
+
+.done:
+00004aa5	movl	0xe4(%ebp),%eax
+00004aa8	addl	$0x34,%esp
+00004aab	popl	%ebx
+00004aac	popl	%ebp
+00004aad	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; OSPSetLEDBehavior_internal(int a, int b) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00004aae	pushl	%ebp
+00004aaf	movl	%esp,%ebp
+00004ab1	pushl	%ebx
+00004ab2	subl	$0x34,%esp
+00004ab5	calll	0x00005fec ; bx_thunk
+
+00004aba	movl	0x08(%ebp),%eax ; a
+00004abd	movl	0x0c(%ebp),%edx ; b
+00004ac0	movb	%al,0xe4(%ebp)
+00004ac3	movb	%dl,0xe0(%ebp)
+00004ac6	movb	$0x0d,0xf3(%ebp)
+00004aca	movzbl	0xe4(%ebp),%eax
+00004ace	movb	%al,0xf4(%ebp)
+00004ad1	movzbl	0xe0(%ebp),%eax
+00004ad5	movb	%al,0xf5(%ebp)
+00004ad8	movb	$0x00,0xf6(%ebp)
+00004adc	movb	$0x00,0xf7(%ebp)
+00004ae0	movl	$0x00000002,0x08(%esp,1)
+00004ae8	movl	$0x00000005,0x04(%esp,1)
+00004af0	leal	0xf3(%ebp),%eax
+00004af3	movl	%eax,(%esp,1)
+00004af6	calll	0x00003c3c ; IRHIDDeviceReport([0xd, a, b, 0, 0], 5, kIOHIDReportTypeFeature)
+00004afb	cmpl	$0xff,%eax
+00004afe	jne	0x00004b3d
+
+00004b00	leal	0x00000aba(%ebx),%eax
+00004b06	movl	%eax,(%esp,1)
+00004b09	calll	0x00007037	; symbol stub for: _basename
+00004b0e	movl	%eax,%edx
+00004b10	leal	0x00001302(%ebx),%eax
+00004b16	movl	%eax,0x0c(%esp,1)
+00004b1a	movl	$0x000002e7,0x08(%esp,1)
+00004b22	movl	%edx,0x04(%esp,1)
+00004b26	leal	0x0000131e(%ebx),%eax ; "%s:%d:%s: IRDeviceReport failed"
+00004b2c	movl	%eax,(%esp,1)
+00004b2f	calll	0x0000703c	; symbol stub for: _printf
+00004b34	movl	$0xffffffff,0xdc(%ebp)
+00004b3b	jmp	0x00004b44
+
+00004b3d	movl	$0x00000000,0xdc(%ebp)
+
+00004b44	movl	0xdc(%ebp),%eax
+00004b47	addl	$0x34,%esp
+00004b4a	popl	%ebx
+00004b4b	popl	%ebp
+00004b4c	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; OSPSetLEDBehavior(led, mode) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+00004b4d	pushl	%ebp
+00004b4e	movl	%esp,%ebp
+00004b50	pushl	%edi
+00004b51	pushl	%esi
+00004b52	pushl	%ebx
+00004b53	subl	$0x000000bc,%esp
+00004b59	calll	0x00005fec ; bx_thunk
+00004b5e	cmpl	$0x02,0x08(%ebp) ; led
+00004b62	jbe	0x00004b6a ; .bad_led
+00004b64	cmpl	$0x06,0x08(%ebp)
+00004b68	jbe	0x00004bb4 ; .good_led
+
+.bad_led:
+00004b6a	leal	0x00000a16(%ebx),%eax
+00004b70	movl	%eax,(%esp,1)
+00004b73	calll	0x00007037	; symbol stub for: _basename
+00004b78	movl	%eax,%edx
+00004b7a	movl	0x08(%ebp),%eax
+00004b7d	movl	%eax,0x10(%esp,1)
+00004b81	leal	0x0000129e(%ebx),%eax
+00004b87	movl	%eax,0x0c(%esp,1)
+00004b8b	movl	$0x000002f1,0x08(%esp,1)
+00004b93	movl	%edx,0x04(%esp,1)
+00004b97	leal	0x000012b2(%ebx),%eax ; "%s:%d:%s: illegal led value %d"
+00004b9d	movl	%eax,(%esp,1)
+00004ba0	calll	0x0000703c	; symbol stub for: _printf
+00004ba5	movl	$0xffffffff,0xffffff64(%ebp)
+00004baf	jmpl	0x00004d7d ; .finish
+
+.good_led:
+00004bb4	cmpl	$0x05,0x08(%ebp)
+00004bb8	je	0x00004bc0
+00004bba	cmpl	$0x06,0x08(%ebp)
+00004bbe	jne	0x00004c14 ; .error_blink
+00004bc0	cmpl	$0x01,0x0c(%ebp) ; mode
+00004bc4	jbel	0x00004c6b ; .lookup
+
+00004bca	leal	0x00000a16(%ebx),%eax
+00004bd0	movl	%eax,(%esp,1)
+00004bd3	calll	0x00007037	; symbol stub for: _basename
+00004bd8	movl	%eax,%edx
+00004bda	movl	0x0c(%ebp),%eax
+00004bdd	movl	%eax,0x10(%esp,1)
+00004be1	leal	0x0000129e(%ebx),%eax
+00004be7	movl	%eax,0x0c(%esp,1)
+00004beb	movl	$0x000002f8,0x08(%esp,1)
+00004bf3	movl	%edx,0x04(%esp,1)
+00004bf7	leal	0x000012d2(%ebx),%eax ; "%s:%d:%s: illegal led value %d"
+00004bfd	movl	%eax,(%esp,1)
+00004c00	calll	0x0000703c	; symbol stub for: _printf
+00004c05	movl	$0xffffffff,0xffffff64(%ebp)
+00004c0f	jmpl	0x00004d7d ; .finish
+
+.error_blink:
+00004c14	cmpl	$0x02,0x0c(%ebp) ; mode
+00004c18	jbe	0x00004c6b ; .lookup
+
+00004c1a	leal	0x00000a16(%ebx),%eax
+00004c20	movl	%eax,(%esp,1)
+00004c23	calll	0x00007037	; symbol stub for: _basename
+00004c28	movl	%eax,%edx
+00004c2a	movl	0x08(%ebp),%eax
+00004c2d	movl	%eax,0x14(%esp,1)
+00004c31	movl	0x0c(%ebp),%eax
+00004c34	movl	%eax,0x10(%esp,1)
+00004c38	leal	0x0000129e(%ebx),%eax
+00004c3e	movl	%eax,0x0c(%esp,1)
+00004c42	movl	$0x000002fe,0x08(%esp,1)
+00004c4a	movl	%edx,0x04(%esp,1)
+00004c4e	leal	0x0000130e(%ebx),%eax ; "%s:%d:%s: illegal behavior value"
+00004c54	movl	%eax,(%esp,1)
+00004c57	calll	0x0000703c	; symbol stub for: _printf
+00004c5c	movl	$0xffffffff,0xffffff64(%ebp)
+00004c66	jmpl	0x00004d7d ; .finish
+
+; lookup data in char buf[4][3][9] (buf[led][mode])
+.lookup:
+00004c6b	subl	$0x03,0x08(%ebp) ; led
+00004c6f	leal	0x00001422(%ebx),%eax ; 0ffset 0x4f80
+00004c75	leal	0xffffff68(%ebp),%ecx
+00004c7b	movl	%eax,%edx
+00004c7d	movl	$0x0000006c,%eax
+00004c82	movl	%eax,0x08(%esp,1) ; length (108)
+00004c86	movl	%edx,0x04(%esp,1) ; src
+00004c8a	movl	%ecx,(%esp,1)     ; dest
+00004c8d	calll	0x000070dc	; symbol stub for: _memcpy
+00004c92	leal	0xffffff68(%ebp),%esi
+00004c98	movl	0x0c(%ebp),%edx ; mode
+00004c9b	movl	%edx,%eax
+00004c9d	shll	$0x03,%eax
+00004ca0	addl	%edx,%eax ; eax = mode*9
+00004ca2	movl	%eax,%ecx
+00004ca4	movl	0x08(%ebp),%edx ; (led-3)
+00004ca7	movl	%edx,%eax
+00004ca9	addl	%eax,%eax
+00004cab	addl	%edx,%eax ; eax = (led-3)*3
+00004cad	leal	0x00000000(,%eax,8),%edx
+00004cb4	addl	%edx,%eax
+00004cb6	leal	(%ecx,%eax,1),%eax
+00004cb9	leal	(%esi,%eax,1),%eax ; buffer + (led*27+mode*9)
+00004cbc	movl	%eax,0xd4(%ebp)
+00004cbf	movl	$0x00000000,0xdc(%ebp)
+00004cc6	movl	$0x00000000,0xd8(%ebp)
+00004ccd	jmpl	0x00004d62 ; .done
+
+.do_internal:
+00004cd2	movl	0xd8(%ebp),%eax
+00004cd5	addl	%eax,%eax
+00004cd7	addl	0xd4(%ebp),%eax
+00004cda	addl	$0x01,%eax
+00004cdd	movzbl	(%eax),%eax ; eax = buf[led][mode][1]
+00004ce0	movb	%al,0xe2(%ebp)
+00004ce3	movl	0xd8(%ebp),%eax
+00004ce6	addl	%eax,%eax
+00004ce8	addl	0xd4(%ebp),%eax
+00004ceb	addl	$0x02,%eax
+00004cee	movzbl	(%eax),%eax ; eax = buf[led][mode][2]
+00004cf1	movb	%al,0xe3(%ebp)
+00004cf4	movsbl	0xe3(%ebp),%eax
+00004cf8	movsbl	0xe2(%ebp),%edx
+00004cfc	movl	%eax,0x04(%esp,1)
+00004d00	movl	%edx,(%esp,1)
+00004d03	calll	0x00004aae ; OSPSetLEDBehavior_internal
+00004d08	movl	%eax,0xe4(%ebp)
+00004d0b	cmpl	$0xff,0xe4(%ebp)
+00004d0f	jne	0x00004d5c ; .done
+
+00004d11	movsbl	0xe3(%ebp),%esi
+00004d15	movsbl	0xe2(%ebp),%edi
+00004d19	leal	0x00000a16(%ebx),%eax
+00004d1f	movl	%eax,(%esp,1)
+00004d22	calll	0x00007037	; symbol stub for: _basename
+00004d27	movl	%eax,%edx
+00004d29	movl	%esi,0x14(%esp,1)
+00004d2d	movl	%edi,0x10(%esp,1)
+00004d31	leal	0x0000129e(%ebx),%eax
+00004d37	movl	%eax,0x0c(%esp,1)
+00004d3b	movl	$0x00000338,0x08(%esp,1)
+00004d43	movl	%edx,0x04(%esp,1)
+00004d47	leal	0x0000133e(%ebx),%eax ; "%s:%d:%s: OSPSetLEDBehavior_internal %d,%d failed"
+00004d4d	movl	%eax,(%esp,1)
+00004d50	calll	0x0000703c	; symbol stub for: _printf
+00004d55	movl	$0xffffffff,0xdc(%ebp)
+
+.done:
+00004d5c	leal	0xd8(%ebp),%eax
+00004d5f	addl	$0x01,(%eax)
+00004d62	movl	0xd4(%ebp),%eax
+00004d65	movzbl	(%eax),%eax
+00004d68	movsbl	%al,%eax
+00004d6b	cmpl	0xd8(%ebp),%eax
+00004d6e	jgl	0x00004cd2 ; .do_internal
+00004d74	movl	0xdc(%ebp),%eax
+00004d77	movl	%eax,0xffffff64(%ebp)
+
+.finish:
+00004d7d	movl	0xffffff64(%ebp),%eax
+00004d83	addl	$0x000000bc,%esp
+00004d89	popl	%ebx
+00004d8a	popl	%esi
+00004d8b	popl	%edi
+00004d8c	popl	%ebp
+00004d8d	ret
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+; OSPSetFanBehavior(m) ; (m = 0, 1, 2)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+00004d8e	pushl	%ebp
+00004d8f	movl	%esp,%ebp
+00004d91	pushl	%ebx
+00004d92	subl	$0x44,%esp
+00004d95	calll	0x00005fec ; bx_thunk
+
+.verify_arg:
+00004d9a	cmpl	$0x02,0x08(%ebp)
+00004d9e	jbe	0x00004de4 ; .valid_arg
+
+00004da0	leal	0x000007da(%ebx),%eax
+00004da6	movl	%eax,(%esp,1)
+00004da9	calll	0x00007037	; symbol stub for: _basename
+00004dae	movl	%eax,%edx
+00004db0	movl	0x08(%ebp),%eax
+00004db3	movl	%eax,0x10(%esp,1)
+00004db7	leal	0x00001136(%ebx),%eax
+00004dbd	movl	%eax,0x0c(%esp,1)
+00004dc1	movl	$0x00000343,0x08(%esp,1)
+00004dc9	movl	%edx,0x04(%esp,1)
+00004dcd	leal	0x0000114a(%ebx),%eax ; "%s:%d:%s: illegal behavior value %d"
+00004dd3	movl	%eax,(%esp,1)
+00004dd6	calll	0x0000703c	; symbol stub for: _printf
+00004ddb	movl	$0xffffffff,0xe4(%ebp)
+00004de2	jmp	0x00004e52 ; .done
+
+.valid_arg:
+00004de4	movl	0x08(%ebp),%eax
+00004de7	movb	$0x0f,0xf6(%ebp)
+00004deb	movb	%al,0xf7(%ebp)
+00004dee	movl	$0x00000001,0x08(%esp,1)
+00004df6	movl	$0x00000002,0x04(%esp,1)
+00004dfe	leal	0xf6(%ebp),%eax
+00004e01	movl	%eax,(%esp,1)
+00004e04	calll	0x00003510 ; IRDeviceReport([0xf, mode], 2, 1)
+00004e09	cmpl	$0xff,%eax
+00004e0c	jne	0x00004e4b ; .success
+
+00004e0e	leal	0x000007da(%ebx),%eax
+00004e14	movl	%eax,(%esp,1)
+00004e17	calll	0x00007037	; symbol stub for: _basename
+00004e1c	movl	%eax,%edx
+00004e1e	leal	0x00001136(%ebx),%eax
+00004e24	movl	%eax,0x0c(%esp,1)
+00004e28	movl	$0x0000034a,0x08(%esp,1)
+00004e30	movl	%edx,0x04(%esp,1)
+00004e34	leal	0x0000103e(%ebx),%eax ; "%s:%d:%s: IRDeviceReport failed"
+00004e3a	movl	%eax,(%esp,1)
+00004e3d	calll	0x0000703c	; symbol stub for: _printf
+00004e42	movl	$0xffffffff,0xe4(%ebp)
+00004e49	jmp	0x00004e52
+
+.success:
+00004e4b	movl	$0x00000000,0xe4(%ebp)
+.done:
+00004e52	movl	0xe4(%ebp),%eax
+00004e55	addl	$0x44,%esp
+00004e58	popl	%ebx
+00004e59	popl	%ebp
+00004e5a	ret
