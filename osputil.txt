@@ -2130,8 +2130,10 @@
 00004268	movl	0xe8(%ebp),%eax
 0000426b	movl	%eax,0xd4(%ebp)
 0000426e	jmpl	0x0000445e
+
 00004273	movl	$0xffffffff,0xd4(%ebp)
 0000427a	jmpl	0x0000445e
+
 0000427f	movl	$0xffffffff,0xec(%ebp)
 00004286	movb	$0x00,0xde(%ebp)
 0000428a	movb	$0xee,0xdf(%ebp)
@@ -2139,7 +2141,7 @@
 00004296	movl	$0x00000002,0x04(%esp,1)
 0000429e	leal	0xde(%ebp),%eax
 000042a1	movl	%eax,(%esp,1)
-000042a4	calll	0x00003510 ; IRDeviceReport()
+000042a4	calll	0x00003510 ; IRDeviceReport([0x00, 0xee], 2, 0)
 000042a9	cmpl	$0xff,%eax
 000042ac	jne	0x000042e4
 
@@ -2607,7 +2609,7 @@
 00004946	movl	$0x00000002,0x04(%esp,1)
 0000494e	leal	0xee(%ebp),%eax
 00004951	movl	%eax,(%esp,1)
-00004954	calll	0x00003510 ; IRDeviceReport()
+00004954	calll	0x00003510 ; IRDeviceReport([0x0e, 0xee], 2, 0)
 00004959	cmpl	$0xff,%eax
 0000495c	jne	0x00004994
 
@@ -2633,19 +2635,19 @@
 000049ae	movl	$0x00000002,(%esp,1)
 000049b5	calll	0x00004467 ; OSPSetState()
 000049ba	movl	%eax,0xe4(%ebp)
-000049bd	jmp	0x00004a27
+000049bd	jmp	0x00004a27 ; .done
 
 000049bf	leal	0x00001900(%ebx),%eax
 000049c5	movl	%eax,(%esp,1)
 000049c8	calll	0x000040c1 ; DeleteNVRAMVariable()
 000049cd	movl	%eax,0xe4(%ebp)
-000049d0	jmp	0x00004a27
+000049d0	jmp	0x00004a27 ; .done
 
 000049d2	leal	0x00001910(%ebx),%eax
 000049d8	movl	%eax,(%esp,1)
 000049db	calll	0x000040c1 ; DeleteNVRAMVariable()
 000049e0	movl	%eax,0xe4(%ebp)
-000049e3	jmp	0x00004a27
+000049e3	jmp	0x00004a27 ; .done
 
 .unknown_state:
 000049e5	leal	0x00000d70(%ebx),%eax
@@ -2663,6 +2665,7 @@
 00004a1b	calll	0x0000703c	; symbol stub for: _printf
 00004a20	movl	$0xffffffff,0xe4(%ebp)
 
+.done:
 00004a27	movl	0xe4(%ebp),%eax
 00004a2a	addl	$0x44,%esp
 00004a2d	popl	%ebx
