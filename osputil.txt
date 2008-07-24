@@ -248,7 +248,7 @@
 
 000028c6	movl	$0xffffffff,0xd4(%ebp)
 000028cd	movl	0xd4(%ebp),%eax
-000028d0	movl	%eax,0xec(%ebp)
+000028d0	movl	%eax,0xec(%ebp) ; state = -1
 000028d3	movl	$0xffffffff,0xf0(%ebp)
 000028da	movl	0x00007010,%eax
 000028df	movl	(%eax),%eax
@@ -286,7 +286,7 @@
 .get_state:
 00002941	movl	0xec(%ebp),%eax
 00002944	movl	%eax,(%esp,1)
-00002947	calll	0x000041b5 ; OSPGetState()
+00002947	calll	0x000041b5 ; OSPGetState(-1)
 0000294c	movl	%eax,0xe0(%ebp)
 0000294f	cmpl	$0x00,0xe8(%ebp)
 00002953	jel	0x00002ace
@@ -2074,9 +2074,9 @@
 000041b4	ret
 
 
-;;;;;;;;;;;;;;;;;
-; OSPGetState() ;
-;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; OSPGetState(int id) [id <= 4] ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 000041b5	pushl	%ebp
 000041b6	movl	%esp,%ebp
@@ -2084,7 +2084,8 @@
 000041b9	subl	$0x54,%esp
 000041bc	calll	0x00005fec ; bx_thunk
 000041c1	cmpl	$0x04,0x08(%ebp)
-000041c5	jal	0x0000441c
+000041c5	jal	0x0000441c ; .unknown_state
+
 000041cb	movl	0x08(%ebp),%eax
 000041ce	leal	0x00000000(,%eax,4),%edx
 000041d5	leal	0x00000023(%ebx),%eax
@@ -2102,31 +2103,38 @@
 000041f3	addb	%al,0x02(%ebp)
 000041f6	addb	%al,(%eax)
 000041f8	movl	$0x00000001,(%esp,1)
-000041ff	calll	0x000041b5 ; OSPGetState()
+000041ff	calll	0x000041b5 ; OSPGetState(1)
 00004204	cmpl	$0x01,%eax
 00004207	jne	0x00004215
+
 00004209	movl	$0x00000001,0xd4(%ebp)
 00004210	jmpl	0x0000445e
+
 00004215	movl	$0x00000002,(%esp,1)
-0000421c	calll	0x000041b5 ; OSPGetState()
+0000421c	calll	0x000041b5 ; OSPGetState(2)
 00004221	movl	%eax,0xe0(%ebp)
 00004224	movl	$0x00000003,(%esp,1)
-0000422b	calll	0x000041b5 ; OSPGetState()
+0000422b	calll	0x000041b5 ; OSPGetState(3)
 00004230	movl	%eax,0xe4(%ebp)
 00004233	cmpl	$0x00,0xe4(%ebp)
 00004237	jle	0x0000424d
+
 00004239	movl	0xe0(%ebp),%eax
 0000423c	cmpl	0xe4(%ebp),%eax
 0000423f	jle	0x0000424d
+
 00004241	movl	$0x00000002,0xd4(%ebp)
 00004248	jmpl	0x0000445e
+
 0000424d	movl	$0x00000004,(%esp,1)
-00004254	calll	0x000041b5 ; OSPGetState()
+00004254	calll	0x000041b5 ; OSPGetState(4)
 00004259	movl	%eax,0xe8(%ebp)
 0000425c	cmpl	$0x00,0xe8(%ebp)
 00004260	jle	0x00004273
+
 00004262	cmpl	$0x04,0xe8(%ebp)
 00004266	jg	0x00004273
+
 00004268	movl	0xe8(%ebp),%eax
 0000426b	movl	%eax,0xd4(%ebp)
 0000426e	jmpl	0x0000445e
@@ -2164,6 +2172,7 @@
 000042ee	movl	0xec(%ebp),%eax
 000042f1	movl	%eax,0xd4(%ebp)
 000042f4	jmpl	0x0000445e
+
 000042f9	movb	$0xff,0xdd(%ebp)
 000042fd	calll	0x00002df4 ; FindAppleRTC()
 00004302	movl	%eax,0xf0(%ebp)
@@ -2242,6 +2251,7 @@
 00004417	movl	%eax,0xd4(%ebp)
 0000441a	jmp	0x0000445e
 
+.unknown_state:
 0000441c	leal	0x000013b3(%ebx),%eax
 00004422	movl	%eax,(%esp,1)
 00004425	calll	0x00007037	; symbol stub for: _basename
