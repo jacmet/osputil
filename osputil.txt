@@ -337,6 +337,7 @@
 000029e9	movl	%eax,0xe0(%ebp)
 000029ec	cmpl	$0x00,0xe8(%ebp)
 000029f0	jel	0x00002ace ; .loop
+
 000029f6	movl	0xe0(%ebp),%eax
 000029f9	movl	%eax,0x08(%esp,1)
 000029fd	movl	0xec(%ebp),%eax
@@ -2296,7 +2297,7 @@
 0000446b	subl	$0x44,%esp
 0000446e	calll	0x00005fec ; bx_thunk
 00004473	cmpl	$0x04,0x08(%ebp) ; verify mode (0..4)
-00004477	jal	0x000047ad
+00004477	jal	0x000047ad ; .invalid
 
 0000447d	movl	0x08(%ebp),%eax ; switch(mode) {
 00004480	leal	0x00000000(,%eax,4),%edx
