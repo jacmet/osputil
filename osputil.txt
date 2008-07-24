@@ -459,9 +459,9 @@
 00002b59	ret
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; IsDeviceSpecificVendorClass() ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; bool IsDeviceSpecificVendorClass(io_service_t service) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 00002b5a	pushl	%ebp
 00002b5b	movl	%esp,%ebp
@@ -534,11 +534,12 @@
 00002c62	movl	%eax,(%esp,1)
 00002c65	calll	0x0000709b	; symbol stub for: _CFNumberGetValue
 00002c6a	movzbl	0xeb(%ebp),%eax
-00002c6e	cmpb	$0xff,%al
+00002c6e	cmpb	$0xff,%al ; vendor specific device class
 00002c70	jne	0x00002c78
 
 00002c72	movb	$0x01,0xf7(%ebp)
 00002c76	jmp	0x00002cdc
+
 00002c78	leal	0x000044b9(%ebx),%eax
 00002c7e	movl	(%eax),%eax
 00002c80	movl	(%eax),%eax
@@ -559,7 +560,7 @@
 00002cb6	movl	%eax,(%esp,1)
 00002cb9	calll	0x00007064	; symbol stub for: _CFGetTypeID
 00002cbe	cmpl	%eax,%esi
-00002cc0	jne	0x00002cdc
+00002cc0	jne	0x00002cdc ; .cleanup
 
 00002cc2	movl	0xf0(%ebp),%edx
 00002cc5	leal	0xe8(%ebp),%eax
@@ -567,16 +568,22 @@
 00002ccc	movl	$0x00000002,0x04(%esp,1)
 00002cd4	movl	%edx,(%esp,1)
 00002cd7	calll	0x0000709b	; symbol stub for: _CFNumberGetValue
+
+.cleanup:
 00002cdc	cmpl	$0x00,0xec(%ebp)
 00002ce0	je	0x00002ced
+
 00002ce2	movl	0xec(%ebp),%eax
 00002ce5	movl	%eax,(%esp,1)
 00002ce8	calll	0x000070e1	; symbol stub for: _CFRelease
+
 00002ced	cmpl	$0x00,0xf0(%ebp)
 00002cf1	je	0x00002cfe
+
 00002cf3	movl	0xf0(%ebp),%eax
 00002cf6	movl	%eax,(%esp,1)
 00002cf9	calll	0x000070e1	; symbol stub for: _CFRelease
+
 00002cfe	movzbl	0xf7(%ebp),%eax
 00002d02	addl	$0x30,%esp
 00002d05	popl	%ebx
@@ -910,10 +917,10 @@
 00003139	movl	0xd8(%ebp),%eax
 0000313c	movl	%eax,0x04(%esp,1)
 00003140	movl	%edx,(%esp,1)
-00003143	calll	0x00007055	; symbol stub for: _IOServiceGetMatchingService
+00003143	calll	0x00007055	; symbol stub for: io_service_t _IOServiceGetMatchingService(masterPort, matching)
 00003148	movl	%eax,0xe4(%ebp)
 0000314b	cmpl	$0x00,0xe4(%ebp)
-0000314f	jne	0x0000318a
+0000314f	jne	0x0000318a ; .found_service
 
 00003151	leal	0x000025cb(%ebx),%eax
 00003157	movl	%eax,(%esp,1)
@@ -928,9 +935,10 @@
 00003180	calll	0x0000703c	; symbol stub for: _printf
 00003185	jmpl	0x000034d7
 
+.found_service:
 0000318a	movl	0xe4(%ebp),%eax
 0000318d	movl	%eax,(%esp,1)
-00003190	calll	0x00002b5a ; IsDeviceSpecificVendorClass()
+00003190	calll	0x00002b5a ; IsDeviceSpecificVendorClass(service)
 00003195	movzbl	%al,%eax
 00003198	testl	%eax,%eax
 0000319a	jnel	0x000034d7
@@ -985,9 +993,10 @@
 000032dd	movl	%eax,0xe0(%ebp)
 000032e0	cmpl	$0x00,0xe0(%ebp)
 000032e4	jne	0x000032ed
+
 000032e6	movl	0xc0(%ebp),%eax
 000032e9	testl	%eax,%eax
-000032eb	jne	0x00003334
+000032eb	jne	0x00003334 ; .plugin_ok
 
 000032ed	movl	0xc0(%ebp),%esi
 000032f0	leal	0x000025cb(%ebx),%eax
@@ -1006,6 +1015,7 @@
 0000332a	calll	0x0000703c	; symbol stub for: _printf
 0000332f	jmpl	0x000034d7
 
+.plugin_ok:
 00003334	movl	0xc0(%ebp),%eax
 00003337	movl	(%eax),%eax
 00003339	movl	0x04(%eax),%esi
@@ -1056,6 +1066,7 @@
 0000341d	movl	%eax,0xe0(%ebp)
 00003420	cmpl	$0x00,0xe0(%ebp)
 00003424	jne	0x0000342d
+
 00003426	movl	0xbc(%ebp),%eax
 00003429	testl	%eax,%eax
 0000342b	jne	0x00003471
@@ -1107,6 +1118,7 @@
 
 000034d7	cmpl	$0x00,0xe4(%ebp)
 000034db	je	0x000034e8
+
 000034dd	movl	0xe4(%ebp),%eax
 000034e0	movl	%eax,(%esp,1)
 000034e3	calll	0x00007073	; symbol stub for: _IOObjectRelease
