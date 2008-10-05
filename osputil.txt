@@ -216,9 +216,9 @@
 0000286e	calll	0x00007028	; symbol stub for: _exit
 
 
-;;;;;;;;;;
-; main() ;
-;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; main(int argc, char **argv) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 00002873	pushl	%ebp
 00002874	movl	%esp,%ebp
@@ -229,11 +229,12 @@
 0000288a	movl	(%eax),%edx
 0000288c	movl	0x000060a0,%eax
 00002891	movl	%edx,(%eax)
-00002893	cmpl	$0x01,0x08(%ebp)
+00002893	cmpl	$0x01,0x08(%ebp) ; arguments?
 00002897	jnel	0x00002ad0
 
 0000289d	calll	0x0000265a ; usage
 000028a2	jmpl	0x00002ad0
+
 000028a7	movl	0x00007010,%eax
 000028ac	movl	(%eax),%eax
 000028ae	testl	%eax,%eax
@@ -248,7 +249,7 @@
 
 000028c6	movl	$0xffffffff,0xd4(%ebp)
 000028cd	movl	0xd4(%ebp),%eax
-000028d0	movl	%eax,0xec(%ebp) ; state = -1
+000028d0	movl	%eax,0xec(%ebp)
 000028d3	movl	$0xffffffff,0xf0(%ebp)
 000028da	movl	0x00007010,%eax
 000028df	movl	(%eax),%eax
@@ -286,7 +287,7 @@
 .get_state:
 00002941	movl	0xec(%ebp),%eax
 00002944	movl	%eax,(%esp,1)
-00002947	calll	0x000041b5 ; OSPGetState(-1)
+00002947	calll	0x000041b5 ; OSPGetState()
 0000294c	movl	%eax,0xe0(%ebp)
 0000294f	cmpl	$0x00,0xe8(%ebp)
 00002953	jel	0x00002ace
@@ -314,7 +315,7 @@
 0000299b	movl	0xf0(%ebp),%edx
 0000299e	movl	%edx,0x04(%esp,1)
 000029a2	movl	%eax,(%esp,1)
-000029a5	calll	0x00004467 ; OPSSetState()
+000029a5	calll	0x00004467 ; OSPSetState(mode, state)
 000029aa	movl	%eax,0xe0(%ebp)
 000029ad	cmpl	$0x00,0xe8(%ebp)
 000029b1	jel	0x00002ace
@@ -337,7 +338,6 @@
 000029e9	movl	%eax,0xe0(%ebp)
 000029ec	cmpl	$0x00,0xe8(%ebp)
 000029f0	jel	0x00002ace ; .loop
-
 000029f6	movl	0xe0(%ebp),%eax
 000029f9	movl	%eax,0x08(%esp,1)
 000029fd	movl	0xec(%ebp),%eax
@@ -379,7 +379,7 @@
 .set_fan:
 00002a74	movl	0xec(%ebp),%eax
 00002a77	movl	%eax,(%esp,1)
-00002a7a	calll	0x00004d8e ; OSPSetFanBehavior
+00002a7a	calll	0x00004d8e ; OSPSetFanBehavior(mode)
 00002a7f	movl	%eax,0xe0(%ebp)
 00002a82	cmpl	$0x00,0xe8(%ebp) ; verbose?
 00002a86	je	0x00002ace
@@ -410,6 +410,7 @@
 
 .loop:
 00002ace	jmp	0x00002ad0
+
 00002ad0	movl	$0x00000000,0x10(%esp,1)
 00002ad8	movl	$0x00006020,%eax
 00002add	movl	%eax,0x0c(%esp,1)
@@ -580,11 +581,9 @@
 
 00002ced	cmpl	$0x00,0xf0(%ebp)
 00002cf1	je	0x00002cfe
-
 00002cf3	movl	0xf0(%ebp),%eax
 00002cf6	movl	%eax,(%esp,1)
 00002cf9	calll	0x000070e1	; symbol stub for: _CFRelease
-
 00002cfe	movzbl	0xf7(%ebp),%eax
 00002d02	addl	$0x30,%esp
 00002d05	popl	%ebx
@@ -818,6 +817,7 @@
 00002f9d	pushl	%ebx
 00002f9e	subl	$0x000000ac,%esp
 00002fa4	calll	0x00005fec ; bx_thunk
+
 00002fa9	movl	$0x00000000,0xc0(%ebp)
 00002fb0	movl	$0x00000000,0xbc(%ebp)
 00002fb7	leal	0x0000279f(%ebx),%eax ; "IOUSBDevice"
@@ -825,8 +825,9 @@
 00002fc0	calll	0x000070b4	; symbol stub for: _IOServiceMatching("IOUSBDevice")
 00002fc5	movl	%eax,0xd8(%ebp)
 00002fc8	cmpl	$0x00,0xd8(%ebp)
-00002fcc	jne	0x00003007
+00002fcc	jne	0x00003007 ; .usb_found
 
+.usb_not_found:
 00002fce	leal	0x000025cb(%ebx),%eax
 00002fd4	movl	%eax,(%esp,1)
 00002fd7	calll	0x00007037	; symbol stub for: _basename
@@ -840,6 +841,7 @@
 00002ffd	calll	0x0000703c	; symbol stub for: _printf
 00003002	jmpl	0x000034d7
 
+.usb_found:
 00003007	leal	0x00004077(%ebx),%eax ; offset 0x6020
 0000300d	movl	(%eax),%eax
 0000300f	movl	(%eax),%edx
@@ -1067,7 +1069,6 @@
 0000341d	movl	%eax,0xe0(%ebp)
 00003420	cmpl	$0x00,0xe0(%ebp)
 00003424	jne	0x0000342d
-
 00003426	movl	0xbc(%ebp),%eax
 00003429	testl	%eax,%eax
 0000342b	jne	0x00003471
@@ -1114,12 +1115,11 @@
 000034c0	calll	0x0000703c	; symbol stub for: _printf
 000034c5	movl	0xbc(%ebp),%eax
 000034c8	movl	%eax,(%esp,1)
-000034cb	calll	0x00002ede ; CloseIRDevice()
+000034cb	calll	0x00002ede ; CloseIRDevice(dev)
 000034d0	movl	$0x00000000,0xbc(%ebp)
 
 000034d7	cmpl	$0x00,0xe4(%ebp)
 000034db	je	0x000034e8
-
 000034dd	movl	0xe4(%ebp),%eax
 000034e0	movl	%eax,(%esp,1)
 000034e3	calll	0x00007073	; symbol stub for: _IOObjectRelease
@@ -1203,22 +1203,27 @@
 000035d9	movl	$0x00000000,0xe8(%ebp)
 000035e0	movzbl	0xd4(%ebp),%eax ; direction (0 = in)
 000035e4	testl	%eax,%eax
-000035e6	jne	0x000035ee
+000035e6	jne	0x000035ee ; .out
 
+.in:
 000035e8	movb	$0xa1,0xd2(%ebp) ; in (to host), class, interface
 000035ec	jmp	0x000035f2
 
+.out:
 000035ee	movb	$0x21,0xd2(%ebp) ; out (to device), class, interface
 
 000035f2	movzbl	0xd2(%ebp),%eax
 000035f6	movb	%al,0xdc(%ebp) ; bmRequestType (0xa1 / 0x21)
+
 000035f9	movzbl	0xd4(%ebp),%eax ; direction (0 = in)
 000035fd	testl	%eax,%eax
-000035ff	je	0x00003607
+000035ff	je	0x00003607 ; .out2
 
+.in2:
 00003601	movb	$0x09,0xd3(%ebp) ; out
 00003605	jmp	0x0000360b
 
+.out2:
 00003607	movb	$0x01,0xd3(%ebp) ; in
 
 0000360b	movzbl	0xd3(%ebp),%eax
@@ -1291,7 +1296,7 @@
 
 00003702	movl	0xf0(%ebp),%eax
 00003705	movl	%eax,(%esp,1)
-00003708	calll	0x00002ede ; CloseIRDevice()
+00003708	calll	0x00002ede ; CloseIRDevice(dev)
 0000370d	movl	0xec(%ebp),%eax
 00003710	movl	%eax,0xcc(%ebp)
 00003713	movl	0xcc(%ebp),%eax
@@ -2002,9 +2007,9 @@
 000040c0	ret
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-; DeleteNVRAMVariable(a) ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; int DeleteNVRAMVariable(a) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 000040c1	pushl	%ebp
 000040c2	movl	%esp,%ebp
@@ -2087,16 +2092,16 @@
 000041b4	ret
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; OSPGetState(int id) [id <= 4] ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; OSPGetState(int state) ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 000041b5	pushl	%ebp
 000041b6	movl	%esp,%ebp
 000041b8	pushl	%ebx
 000041b9	subl	$0x54,%esp
 000041bc	calll	0x00005fec ; bx_thunk
-000041c1	cmpl	$0x04,0x08(%ebp)
+000041c1	cmpl	$0x04,0x08(%ebp) ; valid state?
 000041c5	jal	0x0000441c ; .unknown_state
 
 000041cb	movl	0x08(%ebp),%eax
@@ -2107,27 +2112,27 @@
 000041e0	jmp	*%eax
 000041e2	nop
 000041e3	nop
-000041e4	aaa
-000041e5	addb	%al,(%eax)
-000041e7	addb	%bh,0x38000000(%esi)
-000041ed	addl	%eax,(%eax)
-000041ef	addb	%ch,(%edi)
-000041f1	addb	(%eax),%al
-000041f3	addb	%al,0x02(%ebp)
-000041f6	addb	%al,(%eax)
+
+000041e4	.kospresetreason
+000041e8	.kospremote
+000041ec	.kospbootcount
+000041f0	.kospnvrammaxbootattempts
+000041f4	.kospnvramresetreason
+
+.kospresetreason:
 000041f8	movl	$0x00000001,(%esp,1)
-000041ff	calll	0x000041b5 ; OSPGetState(1)
+000041ff	calll	0x000041b5 ; OSPGetState(kOSPRemote)
 00004204	cmpl	$0x01,%eax
 00004207	jne	0x00004215
 
 00004209	movl	$0x00000001,0xd4(%ebp)
-00004210	jmpl	0x0000445e
+00004210	jmpl	0x0000445e ; .done
 
 00004215	movl	$0x00000002,(%esp,1)
-0000421c	calll	0x000041b5 ; OSPGetState(2)
+0000421c	calll	0x000041b5 ; OSPGetState(kOSPBootCount)
 00004221	movl	%eax,0xe0(%ebp)
 00004224	movl	$0x00000003,(%esp,1)
-0000422b	calll	0x000041b5 ; OSPGetState(3)
+0000422b	calll	0x000041b5 ; OSPGetState(kOSPNVRAMMaxBootAttempts)
 00004230	movl	%eax,0xe4(%ebp)
 00004233	cmpl	$0x00,0xe4(%ebp)
 00004237	jle	0x0000424d
@@ -2135,26 +2140,24 @@
 00004239	movl	0xe0(%ebp),%eax
 0000423c	cmpl	0xe4(%ebp),%eax
 0000423f	jle	0x0000424d
-
 00004241	movl	$0x00000002,0xd4(%ebp)
-00004248	jmpl	0x0000445e
+00004248	jmpl	0x0000445e ; .done
 
 0000424d	movl	$0x00000004,(%esp,1)
-00004254	calll	0x000041b5 ; OSPGetState(4)
+00004254	calll	0x000041b5 ; OSPGetState(kOSPNVRAMResetReason)
 00004259	movl	%eax,0xe8(%ebp)
 0000425c	cmpl	$0x00,0xe8(%ebp)
 00004260	jle	0x00004273
-
 00004262	cmpl	$0x04,0xe8(%ebp)
 00004266	jg	0x00004273
-
 00004268	movl	0xe8(%ebp),%eax
 0000426b	movl	%eax,0xd4(%ebp)
-0000426e	jmpl	0x0000445e
+0000426e	jmpl	0x0000445e ; .done
 
 00004273	movl	$0xffffffff,0xd4(%ebp)
-0000427a	jmpl	0x0000445e
+0000427a	jmpl	0x0000445e ; .done
 
+.kospremote:
 0000427f	movl	$0xffffffff,0xec(%ebp)
 00004286	movb	$0x00,0xde(%ebp)
 0000428a	movb	$0xee,0xdf(%ebp)
@@ -2184,8 +2187,9 @@
 000042eb	movl	%eax,0xec(%ebp)
 000042ee	movl	0xec(%ebp),%eax
 000042f1	movl	%eax,0xd4(%ebp)
-000042f4	jmpl	0x0000445e
+000042f4	jmpl	0x0000445e ; .done
 
+.kospbootcount:
 000042f9	movb	$0xff,0xdd(%ebp)
 000042fd	calll	0x00002df4 ; FindAppleRTC()
 00004302	movl	%eax,0xf0(%ebp)
@@ -2206,16 +2210,17 @@
 0000433f	movzbl	0xdd(%ebp),%eax
 00004343	movsbl	%al,%eax
 00004346	movl	%eax,0xd4(%ebp)
-00004349	jmpl	0x0000445e
+00004349	jmpl	0x0000445e ; .done
 
+; read rtc byte at offset 0xaf?
 0000434e	movl	$0x00000001,0xd8(%ebp)
 00004355	leal	0xdd(%ebp),%eax
-00004358	movl	%eax,0x14(%esp,1)
-0000435c	movl	$0x000000af,0x10(%esp,1)
+00004358	movl	%eax,0x14(%esp,1) ; output structure
+0000435c	movl	$0x000000af,0x10(%esp,1) ; input arg
 00004364	leal	0xd8(%ebp),%eax
-00004367	movl	%eax,0x0c(%esp,1)
-0000436b	movl	$0x00000001,0x08(%esp,1)
-00004373	movl	$0x00000000,0x04(%esp,1)
+00004367	movl	%eax,0x0c(%esp,1) ; structureSize (1)
+0000436b	movl	$0x00000001,0x08(%esp,1) ; scalarInputCount
+00004373	movl	$0x00000000,0x04(%esp,1) ; index
 0000437b	movl	0xf0(%ebp),%eax
 0000437e	movl	%eax,(%esp,1)
 00004381	calll	0x00007078	; symbol stub for: _IOConnectMethodScalarIStructureO
@@ -2227,8 +2232,8 @@
 00004393	andb	$0x0f,%al
 00004395	movb	%al,0xdd(%ebp)
 00004398	jmp	0x000043d9
-0000439a	leal	0x000013b3(%ebx),%eax
 
+0000439a	leal	0x000013b3(%ebx),%eax
 000043a0	movl	%eax,(%esp,1)
 000043a3	calll	0x00007037	; symbol stub for: _basename
 000043a8	movl	%eax,%edx
@@ -2249,20 +2254,31 @@
 000043e4	movzbl	0xdd(%ebp),%eax
 000043e8	movsbl	%al,%eax
 000043eb	movl	%eax,0xd4(%ebp)
-000043ee	jmp	0x0000445e
+000043ee	jmp	0x0000445e ; .done
 
-000043f0	leal	0x00001f43(%ebx),%eax
+.kospnvrammaxbootattempts:
+000043f0	leal	0x00001f43(%ebx),%eax ; offset 0x5104 = max-boot-attempts
+; notice that this points to a struct __CFString, which is something
+; like:
+; struct __CFString {
+;   int unknown1 = 0;
+;   int unknown2 = 0x7c8;
+;   char *text;
+;   int length;
+; };
 000043f6	movl	%eax,(%esp,1)
-000043f9	calll	0x00003de8 ; GetNVRAMVariableChar()
+000043f9	calll	0x00003de8 ; GetNVRAMVariableChar(max-boot-attempts)
 000043fe	movsbl	%al,%eax
 00004401	movl	%eax,0xd4(%ebp)
-00004404	jmp	0x0000445e
-00004406	leal	0x00001f53(%ebx),%eax
+00004404	jmp	0x0000445e ; .done
+
+.kospnvramresetreason:
+00004406	leal	0x00001f53(%ebx),%eax ; offset 0x5114 = os-reset-reason
 0000440c	movl	%eax,(%esp,1)
-0000440f	calll	0x00003de8 ; GetNVRAMVariableChar()
+0000440f	calll	0x00003de8 ; GetNVRAMVariableChar(os-reset-reason)
 00004414	movsbl	%al,%eax
 00004417	movl	%eax,0xd4(%ebp)
-0000441a	jmp	0x0000445e
+0000441a	jmp	0x0000445e ; .done
 
 .unknown_state:
 0000441c	leal	0x000013b3(%ebx),%eax
@@ -2280,6 +2296,7 @@
 00004452	calll	0x0000703c	; symbol stub for: _printf
 00004457	movl	$0xffffffff,0xd4(%ebp)
 
+.done:
 0000445e	movl	0xd4(%ebp),%eax
 00004461	addl	$0x54,%esp
 00004464	popl	%ebx
@@ -2305,14 +2322,13 @@
 0000448d	movl	(%edx,%eax,1),%eax
 00004490	addl	%ebx,%eax
 00004492	jmp	*%eax
-00004494	xorl	$0x75000000,%eax
-00004499	addb	%al,(%eax)
-0000449b	addb	%cl,%bh
-0000449d	addb	%al,(%eax)
-0000449f	addb	%bl,0x02(%edx)
-000044a2	addb	%al,(%eax)
-000044a4	int	$0x02
-000044a6	addb	%al,(%eax)
+00004494	.kospresetreason
+00004498	.kospremote
+0000449c	.kospbootcount
+000044a0	.kospnvrammaxbootattempts
+000044a4	.kospnvramresetreason
+
+.kospresetreason:
 000044a8	leal	0x00001101(%ebx),%eax
 000044ae	movl	%eax,(%esp,1)
 000044b1	calll	0x00007037	; symbol stub for: _basename
@@ -2356,7 +2372,7 @@
 0000454a	calll	0x00002df4 ; FindAppleRTC()
 0000454f	movl	%eax,0xf0(%ebp)
 00004552	cmpl	$0x00,0xf0(%ebp)
-00004556	jne	0x00004598
+00004556	jne	0x00004598 ; .foundrtc
 
 00004558	leal	0x00001101(%ebx),%eax
 0000455e	movl	%eax,(%esp,1)
@@ -2373,14 +2389,16 @@
 00004590	movl	%eax,0xe4(%ebp)
 00004593	jmpl	0x000047ef ; .done
 
+.foundrtc:
+; read rtc byte at offset 0xaf?
 00004598	movl	$0x00000001,0xe8(%ebp)
 0000459f	leal	0xee(%ebp),%eax
-000045a2	movl	%eax,0x14(%esp,1)
-000045a6	movl	$0x000000af,0x10(%esp,1)
+000045a2	movl	%eax,0x14(%esp,1) ; output structure
+000045a6	movl	$0x000000af,0x10(%esp,1) ; input arg (offset?)
 000045ae	leal	0xe8(%ebp),%eax
-000045b1	movl	%eax,0x0c(%esp,1)
-000045b5	movl	$0x00000001,0x08(%esp,1)
-000045bd	movl	$0x00000000,0x04(%esp,1)
+000045b1	movl	%eax,0x0c(%esp,1) ; structureSize (1)
+000045b5	movl	$0x00000001,0x08(%esp,1) ; scalarInputCount
+000045bd	movl	$0x00000000,0x04(%esp,1) ; index
 000045c5	movl	0xf0(%ebp),%eax
 000045c8	movl	%eax,(%esp,1)
 000045cb	calll	0x00007078	; symbol stub for: _IOConnectMethodScalarIStructureO
@@ -2388,6 +2406,7 @@
 000045d3	cmpl	$0x00,0xf4(%ebp)
 000045d7	jnel	0x00004677
 
+; boot count in lower nibble of offset 0xaf
 000045dd	movzbl	0xee(%ebp),%edx
 000045e1	movl	$0xfffffff0,%eax
 000045e6	andb	%al,%dl
@@ -2396,11 +2415,11 @@
 000045ed	orb	%dl,%al
 000045ef	movb	%al,0xee(%ebp)
 000045f2	leal	0xee(%ebp),%eax
-000045f5	movl	%eax,0x14(%esp,1)
-000045f9	movl	$0x000000af,0x10(%esp,1)
-00004601	movl	$0x00000001,0x0c(%esp,1)
-00004609	movl	$0x00000001,0x08(%esp,1)
-00004611	movl	$0x00000001,0x04(%esp,1)
+000045f5	movl	%eax,0x14(%esp,1) ; input structure
+000045f9	movl	$0x000000af,0x10(%esp,1) ; input arg (offset?)
+00004601	movl	$0x00000001,0x0c(%esp,1) ; structureSize
+00004609	movl	$0x00000001,0x08(%esp,1) ; scalarInputCount
+00004611	movl	$0x00000001,0x04(%esp,1) ; index
 00004619	movl	0xf0(%ebp),%eax
 0000461c	movl	%eax,(%esp,1)
 0000461f	calll	0x0000707d	; symbol stub for: _IOConnectMethodScalarIStructureI
@@ -2453,7 +2472,7 @@
 000046cd	cmpl	$0x00,0x0c(%ebp) ; check state (0..15)
 000046d1	js	0x000046d9
 000046d3	cmpl	$0x0f,0x0c(%ebp)
-000046d7	jle	0x00004720
+000046d7	jle	0x00004720 ; .bootattemptswithinrange
 
 000046d9	leal	0x00001101(%ebx),%eax
 000046df	movl	%eax,(%esp,1)
@@ -2471,12 +2490,13 @@
 00004714	movl	$0xffffffff,0xe4(%ebp)
 0000471b	jmpl	0x000047ef ; .done
 
+.bootattemptswithinrange:
 00004720	movl	0x0c(%ebp),%eax
 00004723	movsbl	%al,%eax
-00004726	leal	0x00001c91(%ebx),%edx ; offset 0x5104
+00004726	leal	0x00001c91(%ebx),%edx ; offset 0x5104 = max-boot-attempts
 0000472c	movl	%eax,0x04(%esp,1) ; state
 00004730	movl	%edx,(%esp,1)
-00004733	calll	0x00003ef8 ; SetNVRAMVariableChar()
+00004733	calll	0x00003ef8 ; SetNVRAMVariableChar(max-boot-attempt, state)
 00004738	movl	%eax,0xe4(%ebp)
 0000473b	jmpl	0x000047ef ; .done
 
@@ -2504,10 +2524,10 @@
 
 00004790	movl	0x0c(%ebp),%eax
 00004793	movsbl	%al,%eax
-00004796	leal	0x00001ca1(%ebx),%edx ; offset 0x5114
+00004796	leal	0x00001ca1(%ebx),%edx ; offset 0x5114 = os-reset-reason
 0000479c	movl	%eax,0x04(%esp,1) ; state
 000047a0	movl	%edx,(%esp,1)
-000047a3	calll	0x00003ef8 ; SetNVRAMVariableChar()
+000047a3	calll	0x00003ef8 ; SetNVRAMVariableChar(os-reset-reason, state)
 000047a8	movl	%eax,0xe4(%ebp)
 000047ab	jmp	0x000047ef ; .done
 
@@ -2535,9 +2555,10 @@
 000047f7	ret
 
 
-;;;;;;;;;;;;;;;;;;;
-; OSPClearState() ;
-;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; int OSPClearState(int state) ;
+; states: [0..4] like setstate ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 000047f8	pushl	%ebp
 000047f9	movl	%esp,%ebp
@@ -2546,7 +2567,8 @@
 000047ff	calll	0x00005fec ; bx_thunk
 00004804	cmpl	$0x04,0x08(%ebp)
 00004808	jal	0x000049e5 ; .unknown_state
-0000480e	movl	0x08(%ebp),%eax
+
+0000480e	movl	0x08(%ebp),%eax ; switch (state) {
 00004811	leal	0x00000000(,%eax,4),%edx
 00004818	leal	0x00000024(%ebx),%eax
 0000481e	movl	(%edx,%eax,1),%eax
@@ -2555,22 +2577,19 @@
 00004825	nop
 00004826	nop
 00004827	nop
-00004828	cmpb	%al,(%eax)
-0000482a	addb	%al,(%eax)
-0000482c	subl	(%ecx),%eax
-0000482e	addb	%al,(%eax)
-00004830	movb	%al,0xbb000001
-00004835	addl	%eax,(%eax)
-00004837	addb	%cl,%dh
-00004839	addl	%eax,(%eax)
-0000483b	addb	%al,%bh
-0000483d	incl	%ebp
-0000483e	lock/addb	%al,(%eax)
-00004841	addb	%al,(%eax)
+
+00004828	.kospresetreason
+0000482c	.kospremote
+00004830	.kospbootcount
+00004834	.kospnvrammaxbootattempt
+00004838	.kospnvramresetreason
+
+.kospresetreason:
+0000483c	movl	$0x00000000,0xf0(%ebp)
 00004843	movl	$0x00000001,(%esp,1)
 0000484a	calll	0x000047f8 ; OSPClearState
 0000484f	testl	%eax,%eax
-00004851	je	0x0000488e
+00004851	je	0x0000488e ; .ospremotecleared
 
 00004853	leal	0x00000d70(%ebx),%eax
 00004859	movl	%eax,(%esp,1)
@@ -2585,10 +2604,11 @@
 00004882	calll	0x0000703c	; symbol stub for: _printf
 00004887	movl	$0xffffffff,0xf0(%ebp)
 
+.ospremotecleared:
 0000488e	movl	$0x00000002,(%esp,1)
 00004895	calll	0x000047f8 ; OSPClearState
 0000489a	testl	%eax,%eax
-0000489c	je	0x000048d9
+0000489c	je	0x000048d9 ; .ospbootcountcleared
 
 0000489e	leal	0x00000d70(%ebx),%eax
 000048a4	movl	%eax,(%esp,1)
@@ -2603,10 +2623,11 @@
 000048cd	calll	0x0000703c	; symbol stub for: _printf
 000048d2	movl	$0xffffffff,0xf0(%ebp)
 
+.ospbootcountcleared:
 000048d9	movl	$0x00000004,(%esp,1)
 000048e0	calll	0x000047f8 ; OSPClearState
 000048e5	testl	%eax,%eax
-000048e7	je	0x00004924
+000048e7	je	0x00004924 ; .ospnvmramresetcleared
 
 000048e9	leal	0x00000d70(%ebx),%eax
 000048ef	movl	%eax,(%esp,1)
@@ -2621,10 +2642,13 @@
 00004918	calll	0x0000703c	; symbol stub for: _printf
 0000491d	movl	$0xffffffff,0xf0(%ebp)
 
+.ospnvramresetreasoncleared:
 00004924	movl	0xf0(%ebp),%eax
 00004927	movl	%eax,0xe4(%ebp)
 0000492a	jmpl	0x00004a27
 
+
+.kospremote:
 0000492f	movl	$0xffffffff,0xf4(%ebp)
 00004936	movb	$0x0e,0xee(%ebp)
 0000493a	movb	$0xee,0xef(%ebp)
@@ -2650,25 +2674,28 @@
 00004992	jmp	0x0000499b
 
 00004994	movl	$0x00000000,0xf4(%ebp)
-
 0000499b	movl	0xf4(%ebp),%eax
 0000499e	movl	%eax,0xe4(%ebp)
 000049a1	jmpl	0x00004a27
+
+.kospbootcount:
 000049a6	movl	$0x00000000,0x04(%esp,1)
 000049ae	movl	$0x00000002,(%esp,1)
-000049b5	calll	0x00004467 ; OSPSetState()
+000049b5	calll	0x00004467 ; OSPSetState(kOSPBootCount, 0)
 000049ba	movl	%eax,0xe4(%ebp)
 000049bd	jmp	0x00004a27 ; .done
 
-000049bf	leal	0x00001900(%ebx),%eax
+.kospnvrammaxbootattempt:
+000049bf	leal	0x00001900(%ebx),%eax ; offset 0x5104 = max-boot-attempts
 000049c5	movl	%eax,(%esp,1)
-000049c8	calll	0x000040c1 ; DeleteNVRAMVariable()
+000049c8	calll	0x000040c1 ; DeleteNVRAMVariable(max-boot-attempts)
 000049cd	movl	%eax,0xe4(%ebp)
 000049d0	jmp	0x00004a27 ; .done
 
-000049d2	leal	0x00001910(%ebx),%eax
+.kospnvramresetreason:
+000049d2	leal	0x00001910(%ebx),%eax ; offset 0x5114 = os-reset-reason
 000049d8	movl	%eax,(%esp,1)
-000049db	calll	0x000040c1 ; DeleteNVRAMVariable()
+000049db	calll	0x000040c1 ; DeleteNVRAMVariable(os-reset-reason)
 000049e0	movl	%eax,0xe4(%ebp)
 000049e3	jmp	0x00004a27 ; .done
 
