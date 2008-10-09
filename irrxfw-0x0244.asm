@@ -1,3 +1,13 @@
+;; disassembly of irrxfw-0x0244.irrfx from the AppleTV 2.1 update
+;; (C) 2008 Peter Korsgaard <jacmet@sunsite.dk>
+;;
+;; Create by m8cdas from http://m8cutils.sf.net/
+;; and a lot of blood, sweat and tears ;)
+;;
+;; To reproduce:
+;; wget http://mesu.apple.com/data/IR/694-5484.20080708.hnji4/irrxfw-0x0244.irrxfw
+;; m8cdas irrxfw-0x0244.irrxfw > irrxfw-0x0244.asm
+;;
 0000  7D 13 E5	LJMP	0x13E5 	; bootLoaderVerify
 0003  30	HALT
 0004  80 7B	JMP	0x0080	; POR
